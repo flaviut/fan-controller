@@ -1,6 +1,0 @@
-build/
-.vscode/.cortex-debug*
-.vscode/*.log
-.vscode/c_cpp_properties.json
-.cache/
-compile_commands.json
