@@ -53,10 +53,10 @@ typedef struct
 {
   uint32_t PVDSource;   /*!< PVDSource: Specifies the PVD detection source.
                               This parameter can be a value of @ref PWR_PVD_Source. */
-    
-  uint32_t PVDFilter;   /*!< PVDFilter: Specifies the PVD input filter.    
+
+  uint32_t PVDFilter;   /*!< PVDFilter: Specifies the PVD input filter.
                               This parameter can be a value of @ref PWR_PVD_Filter. */
-    
+
   uint32_t PVDLevel;    /*!< PVDLevel: Specifies the PVD detection level.
                               This parameter can be a value or a combination of
                               @ref PWR_PVD_detection_level. */
@@ -71,10 +71,10 @@ typedef struct
   */
 typedef struct
 {
-  uint32_t LPVoltSelection;         /*!< LPVoltSelection: Set the low power internal regulator output voltage. 
+  uint32_t LPVoltSelection;         /*!< LPVoltSelection: Set the low power internal regulator output voltage.
                                          This parameter can be a value of @ref PWR_STOP_LPR_Voltage. */
 
-  uint32_t RegulatorSwitchDelay;    /*!< RegulatorSwitchDelay: Set VDD voltage from LP to MR ready time after wake up. 
+  uint32_t RegulatorSwitchDelay;    /*!< RegulatorSwitchDelay: Set VDD voltage from LP to MR ready time after wake up.
                                          This parameter can be a value of @ref PWR_STOP_WakeUp_Regulator_Switch_Delay. */
 
   uint32_t WakeUpHsiEnableTime;     /*!< WakeUpHsiEnableTime: Set the flash delay time after wake up.
@@ -85,7 +85,7 @@ typedef struct
 
   uint32_t FlashDelay;              /*!< FlsahDelay: Set the flash delay time after wake up.
                                          This parameter can be a value of @ref PWR_STOP_WakeUp_Flash_Dealy. */
-  
+
 } PWR_StopModeConfigTypeDef;
 
 /**
@@ -98,7 +98,7 @@ typedef struct
 
   uint32_t BiasCurrentValue;         /*!< BiasCurrentValue: Set the bias currents config value.
                                           This parameter can be a number between Min_Data = 0x0000 and Max_Data = 0xFFFF. */
-    
+
 } PWR_BIASConfigTypeDef;
 
 /**
@@ -240,7 +240,7 @@ typedef struct
 /**
   * @}
   */
-  
+
 /** @defgroup PWR_STOP_WakeUp_HSIEN_Timing  PWR STOP mode WakeUp HSI Enable Timing.
   * @{
   */
@@ -249,7 +249,7 @@ typedef struct
 /**
   * @}
   */
-    
+
 /** @defgroup PWR_STOP_mode_Sram_Retention_Voltage  PWR STOP mode Sram Retention Voltage.
   * @{
   */

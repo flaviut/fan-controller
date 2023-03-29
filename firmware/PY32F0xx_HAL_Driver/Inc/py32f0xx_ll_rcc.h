@@ -188,7 +188,7 @@ typedef struct
 /**
   * @}
   */
-  
+
 #if defined(RCC_LSE_SUPPORT)
 /** @defgroup RCC_LL_EC_LSEDRIVE  LSE oscillator drive capability
   * @{
@@ -1889,7 +1889,7 @@ uint32_t    LL_RCC_GetCOMPClockFreq(uint32_t COMPx);
 #endif
 #if defined(LPTIM1)
 uint32_t    LL_RCC_GetLPTIMClockFreq(uint32_t LPTIMx);
-#endif 
+#endif
 #if defined(TRC)
 uint32_t    LL_RCC_GetRTCClockFreq(void);
 #endif

@@ -298,7 +298,7 @@ HAL_StatusTypeDef HAL_ADC_Init(ADC_HandleTypeDef* hadc)
     /*  - data alignment                                                      */
     /*  - resolution                                                          */
     /*  - scan direction                                                      */
-    /*  - DMA continuous request                                              */	
+    /*  - DMA continuous request                                              */
 #if (defined(DMA) || defined(DMA1))
     hadc->Instance->CFGR1 &= ~( ADC_CFGR1_DISCEN  |
                                 ADC_CFGR1_CONT    |
@@ -974,8 +974,8 @@ HAL_StatusTypeDef HAL_ADC_PollForConversion(ADC_HandleTypeDef* hadc, uint32_t Ti
       return HAL_ERROR;
     }
     else
-    {	
-#endif	
+    {
+#endif
       tmp_Flag_EOC = (ADC_FLAG_EOC | ADC_FLAG_EOS);
 #if (defined(DMA) || defined(DMA1))
     }
@@ -1555,7 +1555,7 @@ void HAL_ADC_IRQHandler(ADC_HandleTypeDef* hadc)
     /* overrun ")                                                             */
     /* Exception for usage with DMA overrun event always considered as an     */
     /* error.                                                                 */
-#if (defined(DMA) || defined(DMA1))		
+#if (defined(DMA) || defined(DMA1))
     if ((hadc->Init.Overrun == ADC_OVR_DATA_PRESERVED)            ||
         HAL_IS_BIT_SET(hadc->Instance->CFGR1, ADC_CFGR1_DMAEN)  )
 #else
@@ -2285,9 +2285,9 @@ HAL_StatusTypeDef HAL_ADC_SetCalibration(ADC_HandleTypeDef* hadc,uint32_t CalibS
   * @param  hadc ADC handle
   * @retval  This parameter can be one of the following values:
   *            @arg ADC_CALIBSTATUS_SUCCESS:  Calibration Status Succcess
-  *            @arg ADC_CALIBSTATUS_FAIL: Calibration Status Fail 
+  *            @arg ADC_CALIBSTATUS_FAIL: Calibration Status Fail
   *            @arg ADC_CALIBSTATUS_ONGOING:  Calibration Status On going
-  *            @arg ADC_CALIBSTATUS_INVALID: Calibration Status Invalid 
+  *            @arg ADC_CALIBSTATUS_INVALID: Calibration Status Invalid
   */
 uint32_t HAL_ADC_GetCalibStatus(ADC_HandleTypeDef* hadc)
 {
@@ -2296,9 +2296,9 @@ uint32_t HAL_ADC_GetCalibStatus(ADC_HandleTypeDef* hadc)
   assert_param(IS_ADC_ALL_INSTANCE(hadc->Instance));
   /* Process locked */
   __HAL_LOCK(hadc);
- 
-  adc_calibration_status= READ_BIT(hadc->Instance->CCSR, ADC_CCSR_CALFAIL | ADC_CCSR_CALON);  
- 
+
+  adc_calibration_status= READ_BIT(hadc->Instance->CCSR, ADC_CCSR_CALFAIL | ADC_CCSR_CALON);
+
   /* Process unlocked */
   __HAL_UNLOCK(hadc);
 

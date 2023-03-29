@@ -136,7 +136,7 @@ extern "C" {
 /**
   * @}
   */
- 
+
 /** @defgroup PWR_LL_EC_PVDFILTER PVDFILTER
   * @{
   */
@@ -308,7 +308,7 @@ __STATIC_INLINE uint32_t LL_PWR_IsEnabledBkUpAccess(void)
 }
 
 /**
-  * @brief  Set the HSI turn on mode after wake up 
+  * @brief  Set the HSI turn on mode after wake up
   * @rmtoll CR1          HSION_CTRL          LL_PWR_SetWakeUpHSIOnMode
   * @param  HsiOnMode This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_HSION_AFTER_MR
@@ -358,7 +358,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetSramRetentionVolt(void)
 }
 
 /**
-  * @brief  Set the flash delay time after wake up 
+  * @brief  Set the flash delay time after wake up
   * @rmtoll CR1          FLS_SLPTIME          LL_PWR_SetWakeUpFlashDelay
   * @param  FlashDelay This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_FLASH_DELAY_0US
@@ -373,7 +373,7 @@ __STATIC_INLINE void LL_PWR_SetWakeUpFlashDelay(uint32_t FlashDelay)
 }
 
 /**
-  * @brief  Get the flash delay time after wake up 
+  * @brief  Get the flash delay time after wake up
   * @rmtoll CR1          FLS_SLPTIME          LL_PWR_GetWakeUpFlashDelay
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_FLASH_DELAY_0US
@@ -387,7 +387,7 @@ __STATIC_INLINE uint32_t LL_PWR_GetWakeUpFlashDelay(void)
 }
 
 /**
-  * @brief  Set VDD voltage from LP to VR ready time after wake up 
+  * @brief  Set VDD voltage from LP to VR ready time after wake up
   * @rmtoll CR1          MRRDY_TIME          LL_PWR_SetWakeUpLPToVRReadyTime
   * @param  ReadyTime This parameter can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_LP_TO_VR_READY_2US
@@ -402,7 +402,7 @@ __STATIC_INLINE void LL_PWR_SetWakeUpLPToVRReadyTime(uint32_t ReadyTime)
 }
 
 /**
-  * @brief  Get the LP to VR ready time after wake up 
+  * @brief  Get the LP to VR ready time after wake up
   * @rmtoll CR1          MRRDY_TIME          LL_PWR_GetWakeUpLPToVRReadyTime
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_PWR_WAKEUP_LP_TO_VR_READY_2US
@@ -531,7 +531,7 @@ __STATIC_INLINE void LL_PWR_SetPVDSource(uint32_t PVDSrc)
 }
 
 /**
-  * @brief  Get PVD detection power supply 
+  * @brief  Get PVD detection power supply
   * @rmtoll CR2          PWR_CR2_SRCSEL          LL_PWR_GetPVDSource
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_PWR_PVD_SOURCE_VCC
@@ -591,7 +591,7 @@ __STATIC_INLINE void LL_PWR_SetPVDFilter(uint32_t PVDFilter)
 }
 
 /**
-  * @brief  Get PVD detection power supply 
+  * @brief  Get PVD detection power supply
   * @rmtoll CR2          PWR_CR2_FLT_TIME          LL_PWR_GetPVDFilter
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_PWR_PVD_FILTER_1CLOCK

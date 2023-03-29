@@ -300,4 +300,3 @@ HAL_StatusTypeDef HAL_RTCEx_SetSmoothCalib(RTC_HandleTypeDef *hrtc, uint32_t Smo
   */
 
 /************************ (C) COPYRIGHT Puya *****END OF FILE****/
-

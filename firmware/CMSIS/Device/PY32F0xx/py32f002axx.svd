@@ -21,8 +21,8 @@
 		<nvicPrioBits>4</nvicPrioBits>
 		<vendorSystickConfig>false</vendorSystickConfig>
 	</cpu>
-	
-	
+
+
 	<addressUnitBits>8</addressUnitBits><!-- byte addressable memory -->
 	<width>32</width>                   <!-- bus width is 32 bits --><!-- default settings implicitly inherited by subsequent sections -->
 	<size>32</size>                    <!-- this is the default size (number of bits) of all peripherals and register that do not define "size" themselves -->
@@ -716,7 +716,7 @@
         </register>
       </registers>
     </peripheral>
-          
+
 		<!-- /Core peripherals-->
 		<peripheral>
 			<name>ADC</name>
@@ -1304,7 +1304,7 @@
 							<description>VREFINT enable</description>
 							<bitOffset>22</bitOffset>
 							<bitWidth>1</bitWidth>
-						</field>						
+						</field>
 					</fields>
 				</register>
 			</registers>
@@ -1695,7 +1695,7 @@
 							<description>ADC reset</description>
 							<bitOffset>20</bitOffset>
 							<bitWidth>1</bitWidth>
-						</field>					
+						</field>
 						<field>
 							<name>TIM16RST</name>
 							<description>TIM16 timer reset</description>
@@ -5684,7 +5684,7 @@
 							<description>Auto baudrate mode</description>
 							<bitOffset>13</bitOffset>
 							<bitWidth>2</bitWidth>
-						</field>						
+						</field>
 						<field>
 							<name>ABREN</name>
 							<description>Auto baudrate enable</description>
@@ -5696,7 +5696,7 @@
 							<description>Oversampling mode</description>
 							<bitOffset>11</bitOffset>
 							<bitWidth>1</bitWidth>
-						</field>						
+						</field>
 						<field>
 							<name>CTSIE</name>
 							<description>CTS interrupt enable</description>
@@ -5853,7 +5853,7 @@
 								<bitWidth>12</bitWidth>
 							</field>
 						</fields>
-					</register>			
+					</register>
 				</registers>
 		</peripheral>
 		<peripheral>
@@ -7521,7 +7521,7 @@
 					<size>0x20</size>
 					<access>read-write</access>
 					<resetValue>0x4F55B0AA</resetValue>
-					<fields>						
+					<fields>
 						<field>
 							<name>nBOOT1</name>
 							<description>Boot configuration</description>
@@ -7565,7 +7565,7 @@
 				<register>
 					<name>SDKR</name>
 					<displayName>SDKR</displayName>
-					<description>Flash SDK address 
+					<description>Flash SDK address
 					register</description>
 					<addressOffset>0x24</addressOffset>
 					<size>0x20</size>
@@ -7584,8 +7584,8 @@
 							<bitOffset>0</bitOffset>
 							<bitWidth>5</bitWidth>
 						</field>
-					</fields>					
-				</register>						
+					</fields>
+				</register>
 				<register>
 					<name>WRPR</name>
 					<displayName>WRPR</displayName>
@@ -7631,7 +7631,7 @@
 				<register>
 					<name>TS0</name>
 					<displayName>TS0</displayName>
-					<description>Flash TS0 
+					<description>Flash TS0
 					register</description>
 					<addressOffset>0x100</addressOffset>
 					<size>0x20</size>
@@ -7649,7 +7649,7 @@
 				<register>
 					<name>TS1</name>
 					<displayName>TS1</displayName>
-					<description>Flash TS1 
+					<description>Flash TS1
 					register</description>
 					<addressOffset>0x104</addressOffset>
 					<size>0x20</size>
@@ -7663,11 +7663,11 @@
 							<bitWidth>9</bitWidth>
 						</field>
 					</fields>
-				</register>	
+				</register>
 				<register>
 					<name>TS2P</name>
 					<displayName>TS2P</displayName>
-					<description>Flash TS2P 
+					<description>Flash TS2P
 					register</description>
 					<addressOffset>0x108</addressOffset>
 					<size>0x20</size>
@@ -7681,11 +7681,11 @@
 							<bitWidth>8</bitWidth>
 						</field>
 					</fields>
-				</register>	
+				</register>
 				<register>
 					<name>TPS3</name>
 					<displayName>TPS3</displayName>
-					<description>Flash TPS3 
+					<description>Flash TPS3
 					register</description>
 					<addressOffset>0x10C</addressOffset>
 					<size>0x20</size>
@@ -7699,11 +7699,11 @@
 							<bitWidth>11</bitWidth>
 						</field>
 					</fields>
-				</register>	
+				</register>
 				<register>
 					<name>TS3</name>
 					<displayName>TS3</displayName>
-					<description>Flash TS3 
+					<description>Flash TS3
 					register</description>
 					<addressOffset>0x110</addressOffset>
 					<size>0x20</size>
@@ -7717,11 +7717,11 @@
 							<bitWidth>8</bitWidth>
 						</field>
 					</fields>
-				</register>		
+				</register>
 				<register>
 					<name>PERTPE</name>
 					<displayName>PERTPE</displayName>
-					<description>Flash PERTPE 
+					<description>Flash PERTPE
 					register</description>
 					<addressOffset>0x114</addressOffset>
 					<size>0x20</size>
@@ -7735,11 +7735,11 @@
 							<bitWidth>17</bitWidth>
 						</field>
 					</fields>
-				</register>	
+				</register>
 				<register>
 					<name>SMERTPE</name>
 					<displayName>SMERTPE</displayName>
-					<description>Flash SMERTPE 
+					<description>Flash SMERTPE
 					register</description>
 					<addressOffset>0x118</addressOffset>
 					<size>0x20</size>
@@ -7752,12 +7752,12 @@
 							<bitOffset>0</bitOffset>
 							<bitWidth>17</bitWidth>
 						</field>
-					</fields>					
-				</register>	
+					</fields>
+				</register>
 				<register>
 					<name>PRGTPE</name>
 					<displayName>PRGTPE</displayName>
-					<description>Flash PRGTPE 
+					<description>Flash PRGTPE
 					register</description>
 					<addressOffset>0x11C</addressOffset>
 					<size>0x20</size>
@@ -7770,12 +7770,12 @@
 							<bitOffset>0</bitOffset>
 							<bitWidth>16</bitWidth>
 						</field>
-					</fields>					
-				</register>	
+					</fields>
+				</register>
 				<register>
 					<name>PRETPE</name>
 					<displayName>PRETPE</displayName>
-					<description>Flash PRETPE 
+					<description>Flash PRETPE
 					register</description>
 					<addressOffset>0x120</addressOffset>
 					<size>0x20</size>
@@ -7788,8 +7788,8 @@
 							<bitOffset>0</bitOffset>
 							<bitWidth>13</bitWidth>
 						</field>
-					</fields>					
-				</register>																	
+					</fields>
+				</register>
 			</registers>
 		</peripheral>
 		<peripheral>
@@ -8454,7 +8454,7 @@
 			  <access>read-only</access>
 			  <resetValue>0x0</resetValue>
 			  <fields>
-				  
+
 			  </fields>
 		  </register>
         <register>

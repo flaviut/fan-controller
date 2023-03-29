@@ -122,14 +122,14 @@ ErrorStatus LL_LED_Init(LED_TypeDef *LEDx, LL_LED_InitTypeDef *LED_InitStruct)
   assert_param(IS_LL_LED_COM_SELECT(LED_InitStruct->ComSelect));
   assert_param(IS_LL_LED_LIGHT_TIME(LED_InitStruct->LightTime));
   assert_param(IS_LL_LED_DEAD_TIME(LED_InitStruct->DeadTime));
-  
+
   /* LED Register config */
   MODIFY_REG(LEDx->CR, (uint32_t)(LED_CR_LED_COM_SEL | LED_CR_EHS),
              (LED_InitStruct->ComSelect | LED_InitStruct->ComDrive));
   LL_LED_SetPrescaler(LEDx, LED_InitStruct->Prescaler);
   LL_LED_SetLightAndDeadTime(LEDx, LED_InitStruct->LightTime, LED_InitStruct->DeadTime);
   LL_LED_Enable(LEDx);
-  
+
   return (SUCCESS);
 }
 

@@ -1910,7 +1910,7 @@ HAL_StatusTypeDef HAL_UART_AbortTransmit_IT(UART_HandleTypeDef *huart)
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
 #if (defined(DMA1) || defined(DMA))
   }
-#endif /* DMA1 or DMA */  
+#endif /* DMA1 or DMA */
 
   return HAL_OK;
 }

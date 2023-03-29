@@ -73,11 +73,11 @@ typedef struct
 
                                 This feature can be modified afterwards using using unitary
                                 function @ref LL_LPTIM_SetPrescaler().*/
-  
-  uint32_t UpdateMode;     /*!< Specifies whether to update immediately or after the end 
+
+  uint32_t UpdateMode;     /*!< Specifies whether to update immediately or after the end
                                 of current period.
-                                This parameter can be a value of @ref LPTIM_LL_EC_UPDATE_MODE 
-  
+                                This parameter can be a value of @ref LPTIM_LL_EC_UPDATE_MODE
+
                                 This feature can be modified afterwards using using unitary
                                 function @ref LL_LPTIM_SetUpdateMode().*/
 } LL_LPTIM_InitTypeDef;

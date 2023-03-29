@@ -37,7 +37,7 @@
   * @{
   */
 
-#if defined (LPTIM) 
+#if defined (LPTIM)
 
 /** @addtogroup LPTIM_LL
   * @{
@@ -62,7 +62,7 @@
 
 #define IS_LL_LPTIM_UPDATA_MODE(__VALUE__) (((__VALUE__) == LL_LPTIM_UPDATE_MODE_IMMEDIATE)   \
                                             || ((__VALUE__) == LL_LPTIM_UPDATE_MODE_ENDOFPERIOD))   \
-  
+
 
 /**
   * @}
@@ -98,7 +98,7 @@ ErrorStatus LL_LPTIM_DeInit(LPTIM_TypeDef *LPTIMx)
 
   /* Check the parameters */
   assert_param(IS_LPTIM_INSTANCE(LPTIMx));
-  
+
   if (LPTIMx == LPTIM)
   {
     LL_APB1_GRP1_ForceReset(LL_APB1_GRP1_PERIPH_LPTIM1);

@@ -161,7 +161,7 @@ extern "C" {
 /**
   * @}
   */
-	
+
 #if (defined(DMA) || defined(DMA1))
 /** @defgroup SYSTEM_LL_EC_DMA_MAP DMA MAP
   */

@@ -203,5 +203,3 @@ typedef enum
 #endif
 
 #endif /* ___PY32F0xx_HAL_DEF */
-
-

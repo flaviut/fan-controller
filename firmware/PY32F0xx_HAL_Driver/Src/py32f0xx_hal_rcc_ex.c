@@ -247,7 +247,7 @@ PeriphClkInit->PeriphClockSelection =  RCC_PERIPHCLK_LPTIM;
 PeriphClkInit->PeriphClockSelection = RCC_PERIPHCLK_COMP1 | RCC_PERIPHCLK_COMP2 | RCC_PERIPHCLK_PVD | \
                                         RCC_PERIPHCLK_LPTIM     | RCC_PERIPHCLK_RTC ;
 #endif
-  
+
 #if defined(RCC_CCIPR_PVDSEL)
   /* Get the PVD clock source ---------------------------------------------*/
   PeriphClkInit->PvdClockSelection  = __HAL_RCC_GET_PVD_SOURCE();

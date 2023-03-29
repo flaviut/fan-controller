@@ -124,10 +124,10 @@ typedef struct
 
                                              This feature can be modified afterwards using unitary function @ref LL_COMP_SetOutputPolarity(). */
 
-  uint32_t DigitalFilter;               /*!< Specifies the digital filter. 
-                                             This parameter must be a number between 0 and 0xFFFF 
+  uint32_t DigitalFilter;               /*!< Specifies the digital filter.
+                                             This parameter must be a number between 0 and 0xFFFF
 
-                                             The filter is prohibited,when the value is zero. 
+                                             The filter is prohibited,when the value is zero.
                                              This feature can be modified afterwards using unitary function @ref LL_COMP_SetDigitalFilter(). */
 
 } LL_COMP_InitTypeDef;
@@ -314,9 +314,9 @@ typedef struct
   *         (can be set directly from CMSIS definition or by using helper macro @ref __LL_COMP_COMMON_INSTANCE() )
   * @param  WindowMode This parameter can be one of the following values:
   *         @arg @ref LL_COMP_WINDOWMODE_DISABLE
-  *         @arg @ref LL_COMP_WINDOWMODE_COMP1_INPUT_PLUS_COMMON 
-  *         @arg @ref LL_COMP_WINDOWMODE_COMP2_INPUT_PLUS_COMMON 
-  * @retval None  
+  *         @arg @ref LL_COMP_WINDOWMODE_COMP1_INPUT_PLUS_COMMON
+  *         @arg @ref LL_COMP_WINDOWMODE_COMP2_INPUT_PLUS_COMMON
+  * @retval None
   */
 __STATIC_INLINE void LL_COMP_SetCommonWindowMode(COMP_Common_TypeDef *COMPxy_COMMON, uint32_t WindowMode)
 {
@@ -342,8 +342,8 @@ __STATIC_INLINE void LL_COMP_SetCommonWindowMode(COMP_Common_TypeDef *COMPxy_COM
   *         (can be set directly from CMSIS definition or by using helper macro @ref __LL_COMP_COMMON_INSTANCE() )
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_COMP_WINDOWMODE_DISABLE
-  *         @arg @ref LL_COMP_WINDOWMODE_COMP1_INPUT_PLUS_COMMON 
-  *         @arg @ref LL_COMP_WINDOWMODE_COMP2_INPUT_PLUS_COMMON 
+  *         @arg @ref LL_COMP_WINDOWMODE_COMP1_INPUT_PLUS_COMMON
+  *         @arg @ref LL_COMP_WINDOWMODE_COMP2_INPUT_PLUS_COMMON
   *
   */
 __STATIC_INLINE uint32_t LL_COMP_GetCommonWindowMode(COMP_Common_TypeDef *COMPxy_COMMON)
@@ -556,10 +556,10 @@ __STATIC_INLINE uint32_t LL_COMP_GetInputHysteresis(COMP_TypeDef *COMPx)
 /**
   * @brief  Enable comparator VREFINT releated Input.
   * @rmtoll CSR      SCALER_EN      LL_COMP_EnableScaler
-  * @note   In case of comparator input selected to be connected to 
-  *         VREFINT,3/4VREFINT,1/2VREFINT,1/4VREFINT.SCALER_EN should 
+  * @note   In case of comparator input selected to be connected to
+  *         VREFINT,3/4VREFINT,1/2VREFINT,1/4VREFINT.SCALER_EN should
   *         be Enabled. COMP1/COMP2 use the same register
-  * @param  COMPx Comparator instance       
+  * @param  COMPx Comparator instance
   * @retval None
   */
 __STATIC_INLINE void LL_COMP_EnableScaler(COMP_TypeDef *COMPx)
@@ -570,7 +570,7 @@ __STATIC_INLINE void LL_COMP_EnableScaler(COMP_TypeDef *COMPx)
 /**
   * @brief  Disable comparator VREFINT releated Input.
   * @rmtoll CSR      SCALER_EN      LL_COMP_DisableScaler
-  * @param  COMPx Comparator instance       
+  * @param  COMPx Comparator instance
   * @retval None
   */
 __STATIC_INLINE void LL_COMP_DisableScaler(COMP_TypeDef *COMPx)
@@ -582,7 +582,7 @@ __STATIC_INLINE void LL_COMP_DisableScaler(COMP_TypeDef *COMPx)
   * @brief  Get comparator VREFINT releated Input enable state
   *         (0: SCALER is disabled, 1: SCALER is enabled)
   * @rmtoll CSR      SCALER_EN      LL_COMP_IsEnabledScaler
-  * @param  COMPx Comparator instance       
+  * @param  COMPx Comparator instance
   * @retval State of bit (1 or 0).
   */
 __STATIC_INLINE uint32_t LL_COMP_IsEnabledScaler(COMP_TypeDef *COMPx)
@@ -715,7 +715,7 @@ __STATIC_INLINE uint32_t LL_COMP_IsLocked(COMP_TypeDef *COMPx)
   * @param  COMPx Comparator instance
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_COMP_OUTPUT_LEVEL_LOW
-  *         @arg @ref LL_COMP_OUTPUT_LEVEL_HIGH   
+  *         @arg @ref LL_COMP_OUTPUT_LEVEL_HIGH
   */
 __STATIC_INLINE uint32_t LL_COMP_ReadOutputLevel(COMP_TypeDef *COMPx)
 {
@@ -732,7 +732,7 @@ __STATIC_INLINE uint32_t LL_COMP_ReadOutputLevel(COMP_TypeDef *COMPx)
 /**
   * @brief  Enable comparator DigitalFilter.
   * @rmtoll FR       FLTEN          LL_COMP_EnableDigitalFilter
-  * @param  COMPx Comparator instance   
+  * @param  COMPx Comparator instance
   * @retval None
   */
 __STATIC_INLINE void LL_COMP_EnableDigitalFilter(COMP_TypeDef *COMPx)
@@ -743,7 +743,7 @@ __STATIC_INLINE void LL_COMP_EnableDigitalFilter(COMP_TypeDef *COMPx)
 /**
   * @brief  Disable comparator DigitalFilter.
   * @rmtoll FR       FLTEN          LL_COMP_DisableDigitalFilter
-  * @param  COMPx Comparator instance   
+  * @param  COMPx Comparator instance
   * @retval None
   */
 __STATIC_INLINE void LL_COMP_DisableDigitalFilter(COMP_TypeDef *COMPx)
@@ -755,7 +755,7 @@ __STATIC_INLINE void LL_COMP_DisableDigitalFilter(COMP_TypeDef *COMPx)
   * @brief  Get comparator DigitalFilter state
   *         (0: Filter is Disabled, 1: Filter is Enabled).
   * @rmtoll FR       FLTEN          LL_COMP_IsEnabledDigitalFilter
-  * @param  COMPx Comparator instance    
+  * @param  COMPx Comparator instance
   * @retval State of bit (1 or 0).
   */
 __STATIC_INLINE uint32_t LL_COMP_IsEnabledDigitalFilter(COMP_TypeDef *COMPx)
@@ -766,7 +766,7 @@ __STATIC_INLINE uint32_t LL_COMP_IsEnabledDigitalFilter(COMP_TypeDef *COMPx)
 /**
   * @brief  Set comparator DigitalFilter Value.
   * @rmtoll FR       FLTCNT         LL_COMP_SetDigitalFilter
-  * @param  COMPx Comparator instance      
+  * @param  COMPx Comparator instance
   * @param  DigitalFilter Value between Min_Data=0x0000 and Max_Data=0xFFFF
   * @retval None
   */
@@ -778,7 +778,7 @@ __STATIC_INLINE void LL_COMP_SetDigitalFilter(COMP_TypeDef *COMPx,uint32_t FLTCN
 /**
   * @brief  Get comparator DigitalFilter Value
   * @rmtoll FR       FLTCNT         LL_COMP_GetDigitalFilter
-  * @param  COMPx Comparator instance          
+  * @param  COMPx Comparator instance
   * @retval DigitalFilter Value between Min_Data=0x0000 and Max_Data=0xFFFF
   */
 __STATIC_INLINE uint32_t LL_COMP_GetDigitalFilter(COMP_TypeDef *COMPx)

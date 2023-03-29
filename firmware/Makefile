@@ -21,7 +21,7 @@ CHIP = PY32F002Ax5
 ######################################
 # C sources
 C_SOURCES += src/main.c
-C_SOURCES += CMSIS/Device/PY32F0xx/Source/system_py32f0xx.c 
+C_SOURCES += CMSIS/Device/PY32F0xx/Source/system_py32f0xx.c
 C_SOURCES += PY32F0xx_HAL_Driver/Src/py32f0xx_hal_adc_ex.c
 C_SOURCES += PY32F0xx_HAL_Driver/Src/py32f0xx_hal.c
 C_SOURCES += PY32F0xx_HAL_Driver/Src/py32f0xx_hal_adc.c
@@ -119,7 +119,7 @@ SZ = $(PREFIX)size
 endif
 HEX = $(CP) -O ihex
 BIN = $(CP) -O binary -S
- 
+
 #######################################
 # CFLAGS
 #######################################
@@ -131,14 +131,14 @@ MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
 
 # macros for gcc
 # AS defines
-AS_DEFS = 
+AS_DEFS =
 
 # C defines
 C_DEFS = -D__SOFTFP__ -D${CHIP} -DUSE_HAL_DRIVER
 
 
 # AS includes
-AS_INCLUDES = 
+AS_INCLUDES =
 
 
 # compile gcc flags
@@ -157,8 +157,8 @@ CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
 
 # libraries
-LIBS = -lc -lm -lnosys 
-LIBDIR = 
+LIBS = -lc -lm -lnosys
+LIBDIR =
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections -Wl,--print-memory-usage
 
 # default action: build all
@@ -175,7 +175,7 @@ vpath %.c $(sort $(dir $(C_SOURCES)))
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR) 
+$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
 	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
 
 $(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
@@ -186,19 +186,19 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(HEX) $< $@
-	
+
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(BIN) $< $@	
-	
+	$(BIN) $< $@
+
 $(BUILD_DIR):
-	mkdir $@		
+	mkdir $@
 
 #######################################
 # clean up
 #######################################
 clean:
 	rm -rf $(BUILD_DIR)
-  
+
 #######################################
 # dependencies
 #######################################

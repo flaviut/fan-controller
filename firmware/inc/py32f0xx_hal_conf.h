@@ -33,15 +33,15 @@
 
 /* ########################## Module Selection ############################## */
 /**
-  * @brief This is the list of modules to be used in the HAL driver 
+  * @brief This is the list of modules to be used in the HAL driver
   */
-#define HAL_MODULE_ENABLED  
+#define HAL_MODULE_ENABLED
 #define HAL_RCC_MODULE_ENABLED
 #define HAL_ADC_MODULE_ENABLED
 #define HAL_CRC_MODULE_ENABLED
 #define HAL_COMP_MODULE_ENABLED
-#define HAL_FLASH_MODULE_ENABLED   
-#define HAL_GPIO_MODULE_ENABLED    
+#define HAL_FLASH_MODULE_ENABLED
+#define HAL_GPIO_MODULE_ENABLED
 #define HAL_IWDG_MODULE_ENABLED
 #define HAL_TIM_MODULE_ENABLED
 #define HAL_LPTIM_MODULE_ENABLED
@@ -50,12 +50,12 @@
 #define HAL_UART_MODULE_ENABLED
 #define HAL_SPI_MODULE_ENABLED
 #define HAL_EXTI_MODULE_ENABLED
-#define HAL_CORTEX_MODULE_ENABLED  
+#define HAL_CORTEX_MODULE_ENABLED
 #define HAL_USART_MODULE_ENABLED
 
 /* ########################## Oscillator Values adaptation ####################*/
 
-#if !defined  (HSI_VALUE) 
+#if !defined  (HSI_VALUE)
   #define HSI_VALUE              ((uint32_t)8000000)     /*!< Value of the Internal oscillator in Hz */
 #endif /* HSI_VALUE */
 
@@ -63,7 +63,7 @@
   * @brief Adjust the value of External High Speed oscillator (HSE) used in your application.
   *        This value is used by the RCC HAL module to compute the system frequency
   */
-#if !defined  (HSE_VALUE) 
+#if !defined  (HSE_VALUE)
   #define HSE_VALUE              ((uint32_t)24000000) /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
 
@@ -74,7 +74,7 @@
 /**
   * @brief Internal Low Speed Internal oscillator (LSI) value.
   */
-#if !defined  (LSI_VALUE) 
+#if !defined  (LSI_VALUE)
  #define LSI_VALUE               ((uint32_t)32768)    /*!< LSI Typical Value in Hz */
 #endif /* LSI_VALUE */                                /*!< Value of the Internal Low Speed oscillator in Hz
                                                       The real value may vary depending on the variations
@@ -82,7 +82,7 @@
 
 /**
   * @brief Adjust the value of External Low Speed oscillator (LSE) used in your application.
-  *        This value is used by the RCC HAL module to compute the system frequency  
+  *        This value is used by the RCC HAL module to compute the system frequency
   */
 #if !defined  (LSE_VALUE)
   #define LSE_VALUE              ((uint32_t)32768) /*!< Value of the External oscillator in Hz*/
@@ -98,19 +98,19 @@
 /* ########################### System Configuration ######################### */
 /**
   * @brief This is the HAL system configuration section
-  */     
-#define  VDD_VALUE               ((uint32_t)3300) /*!< Value of VDD in mv */           
+  */
+#define  VDD_VALUE               ((uint32_t)3300) /*!< Value of VDD in mv */
 #define  PRIORITY_HIGHEST        0
 #define  PRIORITY_HIGH           1
 #define  PRIORITY_LOW            2
 #define  PRIORITY_LOWEST         3
-#define  TICK_INT_PRIORITY       ((uint32_t)PRIORITY_LOWEST)    /*!< tick interrupt priority (lowest by default)  */            
+#define  TICK_INT_PRIORITY       ((uint32_t)PRIORITY_LOWEST)    /*!< tick interrupt priority (lowest by default)  */
 #define  USE_RTOS                0
 #define  PREFETCH_ENABLE         0
 
 /* ########################## Assert Selection ############################## */
 /**
-  * @brief Uncomment the line below to expanse the "assert_param" macro in the 
+  * @brief Uncomment the line below to expanse the "assert_param" macro in the
   *        HAL drivers code
   */
 /* #define USE_FULL_ASSERT       1U */
@@ -118,7 +118,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 /**
-  * @brief Include module's header file 
+  * @brief Include module's header file
   */
 #ifdef HAL_MODULE_ENABLED
  #include "py32f0xx_hal.h"
@@ -179,7 +179,7 @@
 #endif /* HAL_TIM_MODULE_ENABLED */
 
 #ifdef HAL_LPTIM_MODULE_ENABLED
- #include "py32f0xx_hal_lptim.h" 
+ #include "py32f0xx_hal_lptim.h"
 #endif /* HAL_LPTIM_MODULE_ENABLED */
 
 #ifdef HAL_UART_MODULE_ENABLED
@@ -196,7 +196,7 @@
   * @brief  The assert_param macro is used for function's parameters check.
   * @param  expr: If expr is false, it calls assert_failed function
   *         which reports the name of the source file and the source
-  *         line number of the call that failed. 
+  *         line number of the call that failed.
   *         If expr is true, it returns no value.
   * @retval None
   */

@@ -768,21 +768,21 @@ HAL_StatusTypeDef HAL_DMA_UnRegisterCallback(DMA_HandleTypeDef *hdma, HAL_DMA_Ca
   * @brief  the DMA channel map.
   * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
   *               the configuration information for the specified DMA Channel.
-  * @param  MapReqNum: request number 
+  * @param  MapReqNum: request number
   *         This parameter can be a value of @ref DMA_Channel_map
   * @retval None
   */
 void HAL_DMA_ChannelMap(DMA_HandleTypeDef *hdma, uint32_t MapReqNum)
 {
   uint32_t position;  //Calculate channel number
-    
+
   assert_param(IS_DMA_MAP_VALUE(MapReqNum));
 
   position = ((uint32_t)hdma->Instance - (uint32_t)DMA1_Channel1) / ((uint32_t)DMA1_Channel2 - (uint32_t)DMA1_Channel1);
 
   /* Enable SYSCFG Clock */
   __HAL_RCC_SYSCFG_CLK_ENABLE();
-  
+
   MODIFY_REG(SYSCFG->CFGR3, (0x1F << (8U * (position & 0x03U))), (MapReqNum << (8U * (position & 0x03U))));
 }
 

@@ -272,7 +272,7 @@ typedef  void (*pADC_CallbackTypeDef)(ADC_HandleTypeDef *hadc); /*!< pointer to 
   * @{
   */
 #define HAL_ADC_ERROR_NONE        (0x00U)   /*!< No error                                              */
-#define HAL_ADC_ERROR_INTERNAL    (0x01U)   /*!< ADC IP internal error: if problem of clocking, 
+#define HAL_ADC_ERROR_INTERNAL    (0x01U)   /*!< ADC IP internal error: if problem of clocking,
                                                  enable/disable, erroneous state                       */
 #define HAL_ADC_ERROR_OVR         (0x02U)   /*!< Overrun error                                         */
 #if (defined(DMA) || defined(DMA1))
@@ -482,7 +482,7 @@ typedef  void (*pADC_CallbackTypeDef)(ADC_HandleTypeDef *hadc); /*!< pointer to 
 /**
   * @}
   */
-	
+
 /**
   * @}
   */
@@ -550,7 +550,7 @@ typedef  void (*pADC_CallbackTypeDef)(ADC_HandleTypeDef *hadc); /*!< pointer to 
 /**
   * @}
   */
-  
+
 /** @defgroup ADC_External_trigger_source_Regular ADC External trigger source Regular
   * @{
   */
@@ -915,7 +915,7 @@ typedef  void (*pADC_CallbackTypeDef)(ADC_HandleTypeDef *hadc); /*!< pointer to 
    :                                                                           \
    (ADC_CCR_VREFEN)                                                            \
  )
- 
+
 /**
   * @brief Shift the AWD threshold in function of the selected ADC resolution.
   *        Thresholds have to be left-aligned on bit 11, the LSB (right bits) are set to 0.
@@ -1156,4 +1156,3 @@ uint32_t                HAL_ADC_GetError(ADC_HandleTypeDef *hadc);
 #endif /* __PY32F0xx_HAL_ADC_H */
 
 /************************ (C) COPYRIGHT Puya *****END OF FILE****/
-

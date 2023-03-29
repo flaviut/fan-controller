@@ -4818,7 +4818,7 @@ HAL_StatusTypeDef HAL_TIM_SlaveConfigSynchro(TIM_HandleTypeDef *htim, TIM_SlaveC
   /* Disable Trigger DMA request */
   __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_TRIGGER);
 #endif
-  
+
   htim->State = HAL_TIM_STATE_READY;
 
   __HAL_UNLOCK(htim);
@@ -4861,7 +4861,7 @@ HAL_StatusTypeDef HAL_TIM_SlaveConfigSynchro_IT(TIM_HandleTypeDef *htim,
   /* Disable Trigger DMA request */
   __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_TRIGGER);
 #endif
-  
+
   htim->State = HAL_TIM_STATE_READY;
 
   __HAL_UNLOCK(htim);

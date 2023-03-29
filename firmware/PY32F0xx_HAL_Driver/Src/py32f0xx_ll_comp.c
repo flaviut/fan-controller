@@ -134,7 +134,7 @@ ErrorStatus LL_COMP_DeInit(COMP_TypeDef *COMPx)
   /* Note: Hardware constraint (refer to description of this function):       */
   /*       COMP instance must not be locked.                                  */
   /* Note: If Deint the COMP1, The HYST and SCALER_EN of COMP2 will be cleared together      */
-  
+
   if (LL_COMP_IsLocked(COMPx) == 0U)
   {
     LL_COMP_WriteReg(COMPx, CSR, 0x00000000U);
@@ -203,7 +203,7 @@ ErrorStatus LL_COMP_Init(COMP_TypeDef *COMPx, LL_COMP_InitTypeDef *COMP_InitStru
     ||(COMP_InitStruct->InputMinus==LL_COMP_INPUT_MINUS_3_4VREFINT)||(COMP_InitStruct->InputMinus==LL_COMP_INPUT_MINUS_VREFINT))
     {
       SET_BIT(COMP12_COMMON->CSR_ODD, COMP_CSR_SCALER_EN);
-    } 
+    }
     if (COMP_InitStruct->DigitalFilter == 0)
     {
       /* Disable digital filter */

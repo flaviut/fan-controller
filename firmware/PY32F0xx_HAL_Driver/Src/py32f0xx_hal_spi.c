@@ -387,7 +387,7 @@ HAL_StatusTypeDef HAL_SPI_Init(SPI_HandleTypeDef *hspi)
                                   hspi->Init.BaudRatePrescaler | hspi->Init.FirstBit));
 
   /* Configure : NSS management, TI Mode, NSS Pulse, Data size and Rx Fifo threshold */
-  WRITE_REG(hspi->Instance->CR2, (((hspi->Init.NSS >> 16U) & SPI_CR2_SSOE) | hspi->Init.DataSize) | 
+  WRITE_REG(hspi->Instance->CR2, (((hspi->Init.NSS >> 16U) & SPI_CR2_SSOE) | hspi->Init.DataSize) |
                                     hspi->Init.SlaveFastMode | frxth);
 
   hspi->ErrorCode = HAL_SPI_ERROR_NONE;
@@ -2051,7 +2051,7 @@ HAL_StatusTypeDef HAL_SPI_Abort(SPI_HandleTypeDef *hspi)
     }
   }
 #endif /* DMA1 or DMA */
-  
+
   /* Reset Tx and Rx transfer counters */
   hspi->RxXferCount = 0U;
   hspi->TxXferCount = 0U;
@@ -3375,7 +3375,7 @@ static HAL_StatusTypeDef SPI_WaitFifoStateUntilTimeout(SPI_HandleTypeDef *hspi, 
       if(count == 0U)
       {
         tmp_timeout = 0U;
-      }      
+      }
       count--;
     }
   }

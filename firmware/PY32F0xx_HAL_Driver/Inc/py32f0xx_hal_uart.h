@@ -391,7 +391,7 @@ typedef  void (*pUART_CallbackTypeDef)(UART_HandleTypeDef *huart);  /*!< pointer
 /**
   * @}
   */
-  
+
 /** @defgroup UART_Advanced_Features_Initialization_Type  UART Advanced Feature Initialization Type
   * @{
   */
@@ -400,7 +400,7 @@ typedef  void (*pUART_CallbackTypeDef)(UART_HandleTypeDef *huart);  /*!< pointer
 /**
   * @}
   */
-  
+
 /** @defgroup UART_AutoBaudRate_Enable  UART Advanced Feature Auto BaudRate Enable
   * @{
   */
@@ -409,7 +409,7 @@ typedef  void (*pUART_CallbackTypeDef)(UART_HandleTypeDef *huart);  /*!< pointer
 /**
   * @}
   */
-  
+
 /** @defgroup UART_AutoBaud_Rate_Mode    UART Advanced Feature AutoBaud Rate Mode
   * @{
   */
@@ -418,7 +418,7 @@ typedef  void (*pUART_CallbackTypeDef)(UART_HandleTypeDef *huart);  /*!< pointer
 /**
   * @}
   */
-  
+
 /* Exported macro ------------------------------------------------------------*/
 /** @defgroup UART_Exported_Macros UART Exported Macros
   * @{
@@ -457,7 +457,7 @@ typedef  void (*pUART_CallbackTypeDef)(UART_HandleTypeDef *huart);  /*!< pointer
   *         (USART,UART availability and x,y values depending on device).
   * @param  __FLAG__ specifies the flag to check.
   *        This parameter can be one of the following values:
-  *            @arg UART_FLAG_CTS:  CTS Change flag 
+  *            @arg UART_FLAG_CTS:  CTS Change flag
   *            @arg UART_FLAG_TXE:  Transmit data register empty flag
   *            @arg UART_FLAG_TC:   Transmission Complete flag
   *            @arg UART_FLAG_RXNE: Receive data register not empty flag

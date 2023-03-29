@@ -225,7 +225,7 @@ __STATIC_INLINE uint32_t LL_LED_GetComNum(LED_TypeDef *LEDx)
 
 
 /**
-  * @brief  Enable LED. 
+  * @brief  Enable LED.
   * @param  LEDx LED Instance
   * @retval None
   */
@@ -235,7 +235,7 @@ __STATIC_INLINE void LL_LED_Enable(LED_TypeDef *LEDx)
 }
 
 /**
-  * @brief  Disable LED. 
+  * @brief  Disable LED.
   * @param  LEDx LED Instance
   * @retval None
   */
@@ -362,7 +362,7 @@ __STATIC_INLINE uint32_t LL_LED_GetDeadTime(LED_TypeDef *LEDx)
   *         @arg @ref LL_LED_DISP_9
   *         @arg @ref LL_LED_DISP_A
   *         @arg @ref LL_LED_DISP_B
-  *         @arg @ref LL_LED_DISP_C 
+  *         @arg @ref LL_LED_DISP_C
   *         @arg @ref LL_LED_DISP_D
   *         @arg @ref LL_LED_DISP_E
   *         @arg @ref LL_LED_DISP_F
@@ -402,7 +402,7 @@ __STATIC_INLINE void LL_LED_SetDisplayValue(LED_TypeDef *LEDx,uint32_t comCh,\
   *         @arg @ref LL_LED_DISP_9
   *         @arg @ref LL_LED_DISP_A
   *         @arg @ref LL_LED_DISP_B
-  *         @arg @ref LL_LED_DISP_C 
+  *         @arg @ref LL_LED_DISP_C
   *         @arg @ref LL_LED_DISP_D
   *         @arg @ref LL_LED_DISP_E
   *         @arg @ref LL_LED_DISP_F

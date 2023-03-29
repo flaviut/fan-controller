@@ -40,7 +40,7 @@ HAL_StatusTypeDef HAL_LED_Init(LED_HandleTypeDef *hled)
   {
     return HAL_ERROR;
   }
-  
+
   /* Check the parameters */
   assert_param(IS_LED_ALL_INSTANCE(hled->Instance));
   assert_param(IS_LED_COM_DRIVE(hled->Init.ComDrive));
@@ -53,37 +53,37 @@ HAL_StatusTypeDef HAL_LED_Init(LED_HandleTypeDef *hled)
   {
     /* Allocate lock resource and initialize it */
     __HAL_UNLOCK(hled);
-      
+
 #if (USE_HAL_LED_REGISTER_CALLBACKS == 1)
     /* Reset Callback pointers */
     if (hled->EwiCallback == NULL)
     {
       hled->EwiCallback = HAL_LED_LightCpltCallback;
     }
-   
+
     if (hled->MspInitCallback == NULL)
     {
       hled->MspInitCallback = HAL_LED_MspInit;
     }
-   
+
     /* Init the low level hardware */
     hled->MspInitCallback(hwwdg);
 #else
     HAL_LED_MspInit(hled);
 #endif
   }
-  
+
   hled->State = HAL_LED_STATE_BUSY;
-  
+
   /* LED Register config */
   LED_SetConfig(hled);
-  
+
   /* Enable the peripheral */
   __HAL_LED_ENABLE(hled);
 
   /* Initialize the LED state */
   hled->State= HAL_LED_STATE_READY;
-  
+
   return HAL_OK;
 }
 
@@ -113,10 +113,10 @@ HAL_StatusTypeDef HAL_LED_DeInit(LED_HandleTypeDef *hled)
   hled->Instance->IR = 0x01;
 
   hled->State = HAL_LED_STATE_RESET;
-  
+
   /* Release Lock */
   __HAL_UNLOCK(hled);
-  
+
   return HAL_OK;
 }
 
@@ -166,31 +166,31 @@ HAL_StatusTypeDef HAL_LED_SetComDisplay(LED_HandleTypeDef *hled, uint8_t comCh, 
     /* Process Locked */
     __HAL_LOCK(hled);
     hled->State = HAL_LED_STATE_BUSY;
-      
+
     while ((comCh >> position) != 0)
     {
       /* Get the COM channel position */
       chcurrent = comCh & (1U << position);
-    
+
       if(chcurrent)
       {
         pTmp = ((uint32_t *)&hled->Instance->DR0) + position;
         WRITE_REG(*pTmp, data);
       }
-    
+
       position++;
     }
-    
+
     /* Process Unlocked */
     __HAL_UNLOCK(hled);
     hled->State = HAL_LED_STATE_READY;
-    
+
     return HAL_OK;
   }
   else
   {
     return HAL_ERROR;
-  }  
+  }
 }
 
 /**
@@ -248,4 +248,3 @@ __weak void HAL_LED_LightCpltCallback(LED_HandleTypeDef *hled)
 }
 
 #endif /* HAL_LED_MODULE_ENABLED */
-

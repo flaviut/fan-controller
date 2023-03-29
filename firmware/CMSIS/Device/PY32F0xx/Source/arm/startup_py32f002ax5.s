@@ -1,4 +1,4 @@
-;****************************************************************************** 
+;******************************************************************************
 ;* @file              : startup_py32f002ax5.s
 ;* @brief             : PY32F002Axx devices vector table for MDK-ARM toolchain.
 ;*                      This module performs:
@@ -9,7 +9,7 @@
 ;*                        calls main()).
 ;*                      After Reset the CortexM0+ processor is in Thread mode,
 ;*                      priority is Privileged, and the Stack is set to Main.
-;****************************************************************************** 
+;******************************************************************************
 ;* @attention
 ;*
 ;* <h2><center>&copy; Copyright (c) Puya Semiconductor Co.
@@ -23,7 +23,7 @@
 ;* License. You may obtain a copy of the License at:
 ;*                        opensource.org/licenses/BSD-3-Clause
 ;*
-;****************************************************************************** 
+;******************************************************************************
 ;* <<< Use Configuration Wizard in Context Menu >>>
 
 ; Amount of memory (in bytes) allocated for Stack
@@ -79,35 +79,35 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     SysTick_Handler           ; SysTick Handler
 
                 ; External Interrupts
-                DCD     0                              ; 0Reserved 
-                DCD     0                              ; 1Reserved 
-                DCD     0                              ; 2Reserved 
+                DCD     0                              ; 0Reserved
+                DCD     0                              ; 1Reserved
+                DCD     0                              ; 2Reserved
                 DCD     FLASH_IRQHandler               ; 3FLASH
                 DCD     RCC_IRQHandler                 ; 4RCC
                 DCD     EXTI0_1_IRQHandler             ; 5EXTI Line 0 and 1
                 DCD     EXTI2_3_IRQHandler             ; 6EXTI Line 2 and 3
                 DCD     EXTI4_15_IRQHandler            ; 7EXTI Line 4 to 15
-                DCD     0                              ; 8Reserved 
-                DCD     0                              ; 9Reserved 
-                DCD     0                              ; 10Reserved 
-                DCD     0                              ; 11Reserved 
-                DCD     ADC_COMP_IRQHandler            ; 12ADC&COMP1 
+                DCD     0                              ; 8Reserved
+                DCD     0                              ; 9Reserved
+                DCD     0                              ; 10Reserved
+                DCD     0                              ; 11Reserved
+                DCD     ADC_COMP_IRQHandler            ; 12ADC&COMP1
                 DCD     TIM1_BRK_UP_TRG_COM_IRQHandler ; 13TIM1 Break, Update, Trigger and Commutation
                 DCD     TIM1_CC_IRQHandler             ; 14TIM1 Capture Compare
-                DCD     0                              ; 15Reserved 
-                DCD     0                              ; 16Reserved 
+                DCD     0                              ; 15Reserved
+                DCD     0                              ; 16Reserved
                 DCD     LPTIM1_IRQHandler              ; 17LPTIM1
-                DCD     0                              ; 18Reserved 
-                DCD     0                              ; 19Reserved 
-                DCD     0                              ; 20Reserved 
+                DCD     0                              ; 18Reserved
+                DCD     0                              ; 19Reserved
+                DCD     0                              ; 20Reserved
                 DCD     TIM16_IRQHandler               ; 21TIM16
-                DCD     0                              ; 22Reserved 
+                DCD     0                              ; 22Reserved
                 DCD     I2C1_IRQHandler                ; 23I2C1
-                DCD     0                              ; 24Reserved 
+                DCD     0                              ; 24Reserved
                 DCD     SPI1_IRQHandler                ; 25SPI1
                 DCD     0                              ; 26Reserved
                 DCD     USART1_IRQHandler              ; 27USART1
-                DCD     0                              ; 28Reserved 
+                DCD     0                              ; 28Reserved
                 DCD     0                              ; 29Reserved
                 DCD     0                              ; 30Reserved
                 DCD     0                              ; 31Reserved
@@ -171,12 +171,12 @@ Default_Handler PROC
                 EXPORT  SPI1_IRQHandler                [WEAK]
                 EXPORT  USART1_IRQHandler              [WEAK]
 
-FLASH_IRQHandler              
-RCC_IRQHandler                
-EXTI0_1_IRQHandler             
-EXTI2_3_IRQHandler             
-EXTI4_15_IRQHandler   
-ADC_COMP_IRQHandler          
+FLASH_IRQHandler
+RCC_IRQHandler
+EXTI0_1_IRQHandler
+EXTI2_3_IRQHandler
+EXTI4_15_IRQHandler
+ADC_COMP_IRQHandler
 TIM1_BRK_UP_TRG_COM_IRQHandler
 TIM1_CC_IRQHandler
 LPTIM1_IRQHandler

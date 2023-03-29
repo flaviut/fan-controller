@@ -56,10 +56,10 @@ typedef struct
   uint32_t NbPages;          /*!< Number of pages to be erased.
                                   This parameter must be a value between 1 and (FLASH_PAGE_NB - value of initial page)*/
   uint32_t SectorAddress;    /*!< PageAdress: Initial FLASH page address to erase when mass erase and page erase is disabled
-                                  This parameter must be a number between Min_Data = FLASH_BASE and Max_Data = FLASH_BANK1_END */    
+                                  This parameter must be a number between Min_Data = FLASH_BASE and Max_Data = FLASH_BANK1_END */
   uint32_t NbSectors;        /*!< Number of sectors to be erased.
                                   This parameter must be a value between 1 and (FLASH_SECTOR_NB - value of initial sector)*/
-    
+
 } FLASH_EraseInitTypeDef;
 
 /**
@@ -129,7 +129,7 @@ typedef struct
 /**
   * @}
   */
-  
+
 /** @defgroup FLASH_Type_Erase FLASH erase type
   * @{
   */
@@ -270,7 +270,7 @@ typedef struct
 /**
   * @}
   */
-  
+
 /** @defgroup FLASH_OB_USER_BOR_ENABLE FLASH Option Bytes BOR Level
   * @{
   */

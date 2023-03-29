@@ -322,7 +322,7 @@ HAL_StatusTypeDef HAL_PWR_ConfigStopMode(PWR_StopModeConfigTypeDef *sStopModeCon
   assert_param(IS_PWR_WAKEUP_FLASH_DELAY(sStopModeConfig->FlashDelay));
 
   /* Set the STOP mode and STOP wake-up timing related configurations */
-  MODIFY_REG(PWR->CR1, (PWR_CR1_VOS | PWR_CR1_MRRDY_TIME | PWR_CR1_HSION_CTRL | PWR_CR1_SRAM_RETV | PWR_CR1_SRAM_RETV), 
+  MODIFY_REG(PWR->CR1, (PWR_CR1_VOS | PWR_CR1_MRRDY_TIME | PWR_CR1_HSION_CTRL | PWR_CR1_SRAM_RETV | PWR_CR1_SRAM_RETV),
                        (sStopModeConfig->LPVoltSelection) | \
                        (sStopModeConfig->RegulatorSwitchDelay) | \
                        (sStopModeConfig->SramRetentionVolt) | \
@@ -341,7 +341,7 @@ HAL_StatusTypeDef HAL_PWR_ConfigBIAS(PWR_BIASConfigTypeDef *sBIASConfig)
 {
   /* Check the parameters */
   assert_param(IS_BIAS_CURRENTS_SOURCE(sBIASConfig->BiasCurrentSource));
-  
+
   if(((sBIASConfig->BiasCurrentSource) & PWR_BIAS_CURRENTS_FROM_BIAS_CR) == PWR_BIAS_CURRENTS_FROM_BIAS_CR)
   {
     /* Set the bias currents load source and bias currents value*/

@@ -1500,12 +1500,12 @@ HAL_StatusTypeDef HAL_TIMEx_ConfigCommutEvent(TIM_HandleTypeDef *htim, uint32_t 
 
   /* Disable Commutation Interrupt */
   __HAL_TIM_DISABLE_IT(htim, TIM_IT_COM);
-  
+
 #if (defined(DMA) || defined(DNA1))
   /* Disable Commutation DMA request */
   __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_COM);
 #endif
-  
+
   __HAL_UNLOCK(htim);
 
   return HAL_OK;
@@ -1555,12 +1555,12 @@ HAL_StatusTypeDef HAL_TIMEx_ConfigCommutEvent_IT(TIM_HandleTypeDef *htim, uint32
   /* Select the Commutation event source */
   htim->Instance->CR2 &= ~TIM_CR2_CCUS;
   htim->Instance->CR2 |= CommutationSource;
-  
+
 #if (defined(DMA) || defined(DMA1))
   /* Disable Commutation DMA request */
   __HAL_TIM_DISABLE_DMA(htim, TIM_DMA_COM);
 #endif
-  
+
   /* Enable the Commutation Interrupt */
   __HAL_TIM_ENABLE_IT(htim, TIM_IT_COM);
 

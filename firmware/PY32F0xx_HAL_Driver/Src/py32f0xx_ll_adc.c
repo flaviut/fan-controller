@@ -196,7 +196,7 @@ ErrorStatus LL_ADC_CommonDeInit(ADC_Common_TypeDef *ADCxy_COMMON)
   * @param  ADCx ADC instance
   * @retval An ErrorStatus enumeration value:
   *          - SUCCESS: ADC registers are de-initialized
-  *          - ERROR: ADC registers are not de-initialized  
+  *          - ERROR: ADC registers are not de-initialized
   */
 ErrorStatus LL_ADC_DeInit(ADC_TypeDef *ADCx)
 {

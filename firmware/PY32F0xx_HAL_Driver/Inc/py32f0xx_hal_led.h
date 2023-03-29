@@ -54,9 +54,9 @@ typedef struct
 
 } LED_InitTypeDef;
 
-/** 
+/**
   * @brief HAL LED State structures definition
-  */ 
+  */
 typedef enum
 {
   HAL_LED_STATE_RESET             = 0x00U,    /*!< Peripheral is not yet Initialized */

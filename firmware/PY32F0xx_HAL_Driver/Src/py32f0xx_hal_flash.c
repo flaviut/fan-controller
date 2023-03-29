@@ -329,7 +329,7 @@ HAL_StatusTypeDef HAL_FLASH_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t *
 
   /* Process Locked */
   __HAL_LOCK(&pFlash);
-    
+
   /* Config flash timming */
   __HAL_FLASH_TIMMING_SEQUENCE_CONFIG();
 
@@ -413,7 +413,7 @@ HAL_StatusTypeDef HAL_FLASH_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t *
           *PageSectorError = address;
           break;
         }
-      }  
+      }
     }
   }
 
@@ -439,7 +439,7 @@ HAL_StatusTypeDef HAL_FLASH_Erase_IT(FLASH_EraseInitTypeDef *pEraseInit)
 
   /* Process Locked */
   __HAL_LOCK(&pFlash);
-    
+
   /* Config flash timming */
   __HAL_FLASH_TIMMING_SEQUENCE_CONFIG();
 
@@ -482,7 +482,7 @@ HAL_StatusTypeDef HAL_FLASH_Erase_IT(FLASH_EraseInitTypeDef *pEraseInit)
       /* Erase by sector to be done */
       pFlash.NbPagesSectorsToErase = pEraseInit->NbSectors;
       pFlash.PageOrSector = pEraseInit->SectorAddress;
-        
+
       FLASH_SectorErase(pEraseInit->SectorAddress);
     }
   }
@@ -518,7 +518,7 @@ HAL_StatusTypeDef HAL_FLASH_Program(uint32_t TypeProgram, uint32_t Address, uint
 
   /* Process Locked */
   __HAL_LOCK(&pFlash);
-    
+
   /* Config flash timming */
   __HAL_FLASH_TIMMING_SEQUENCE_CONFIG();
 
@@ -587,7 +587,7 @@ HAL_StatusTypeDef HAL_FLASH_Program_IT(uint32_t TypeProgram, uint32_t Address, u
 
   /* Process Locked */
   __HAL_LOCK(&pFlash);
-    
+
   /* Config flash timming */
   __HAL_FLASH_TIMMING_SEQUENCE_CONFIG();
 
@@ -756,7 +756,7 @@ HAL_StatusTypeDef HAL_FLASH_OBProgram(FLASH_OBProgramInitTypeDef *pOBInit)
 
   /* Process Locked */
   __HAL_LOCK(&pFlash);
-    
+
   /* Config flash timming */
   __HAL_FLASH_TIMMING_SEQUENCE_CONFIG();
 
@@ -769,14 +769,14 @@ HAL_StatusTypeDef HAL_FLASH_OBProgram(FLASH_OBProgramInitTypeDef *pOBInit)
     /* Write protection configuration */
     FLASH->WRPR = (uint16_t)(~(pOBInit->WRPSector));
   }
-  
+
   /* SDK register */
   if ((pOBInit->OptionType & OPTIONBYTE_SDK) != 0)
   {
     /* SDK protection configuration */
     FLASH->SDKR = (pOBInit->SDKStartAddr) | (pOBInit->SDKEndAddr<<8);
   }
-  
+
   /* Option register */
   if ((pOBInit->OptionType & (OPTIONBYTE_RDP | OPTIONBYTE_USER)) == (OPTIONBYTE_RDP | OPTIONBYTE_USER))
   {

@@ -1,4 +1,4 @@
-;****************************************************************************** 
+;******************************************************************************
 ;* @file              : startup_py32f003xx.s
 ;* @brief             : PY32F003xx devices vector table for MDK-ARM toolchain.
 ;*                      This module performs:
@@ -9,7 +9,7 @@
 ;*                        calls main()).
 ;*                      After Reset the CortexM0+ processor is in Thread mode,
 ;*                      priority is Privileged, and the Stack is set to Main.
-;****************************************************************************** 
+;******************************************************************************
 ;* @attention
 ;*
 ;* <h2><center>&copy; Copyright (c) Puya Semiconductor Co.
@@ -23,7 +23,7 @@
 ;* License. You may obtain a copy of the License at:
 ;*                        opensource.org/licenses/BSD-3-Clause
 ;*
-;****************************************************************************** 
+;******************************************************************************
 ;* <<< Use Configuration Wizard in Context Menu >>>
 
 ; Amount of memory (in bytes) allocated for Stack
@@ -87,23 +87,23 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     EXTI0_1_IRQHandler             ; 5EXTI Line 0 and 1
                 DCD     EXTI2_3_IRQHandler             ; 6EXTI Line 2 and 3
                 DCD     EXTI4_15_IRQHandler            ; 7EXTI Line 4 to 15
-                DCD     0                              ; 8Reserved 
+                DCD     0                              ; 8Reserved
                 DCD     DMA1_Channel1_IRQHandler       ; 9DMA1 Channel 1
                 DCD     DMA1_Channel2_3_IRQHandler     ; 10DMA1 Channel 2 and Channel 3
-                DCD     0                              ; 11Reserved 
-                DCD     ADC_COMP_IRQHandler            ; 12ADC&COMP1 
+                DCD     0                              ; 11Reserved
+                DCD     ADC_COMP_IRQHandler            ; 12ADC&COMP1
                 DCD     TIM1_BRK_UP_TRG_COM_IRQHandler ; 13TIM1 Break, Update, Trigger and Commutation
                 DCD     TIM1_CC_IRQHandler             ; 14TIM1 Capture Compare
-                DCD     0                              ; 15Reserved 
+                DCD     0                              ; 15Reserved
                 DCD     TIM3_IRQHandler                ; 16TIM3
                 DCD     LPTIM1_IRQHandler              ; 17LPTIM1
-                DCD     0                              ; 18Reserved 
+                DCD     0                              ; 18Reserved
                 DCD     TIM14_IRQHandler               ; 19TIM14
-                DCD     0                              ; 20Reserved 
+                DCD     0                              ; 20Reserved
                 DCD     TIM16_IRQHandler               ; 21TIM16
                 DCD     TIM17_IRQHandler               ; 22TIM17
                 DCD     I2C1_IRQHandler                ; 23I2C1
-                DCD     0                              ; 24Reserved 
+                DCD     0                              ; 24Reserved
                 DCD     SPI1_IRQHandler                ; 25SPI1
                 DCD     0                              ; 26Reserved
                 DCD     USART1_IRQHandler              ; 27USART1
@@ -164,9 +164,9 @@ Default_Handler PROC
                 EXPORT  RCC_IRQHandler                 [WEAK]
                 EXPORT  EXTI0_1_IRQHandler             [WEAK]
                 EXPORT  EXTI2_3_IRQHandler             [WEAK]
-                EXPORT  EXTI4_15_IRQHandler            [WEAK]   
+                EXPORT  EXTI4_15_IRQHandler            [WEAK]
                 EXPORT  DMA1_Channel1_IRQHandler       [WEAK]
-                EXPORT  DMA1_Channel2_3_IRQHandler     [WEAK]        
+                EXPORT  DMA1_Channel2_3_IRQHandler     [WEAK]
                 EXPORT  ADC_COMP_IRQHandler            [WEAK]
                 EXPORT  TIM1_BRK_UP_TRG_COM_IRQHandler [WEAK]
                 EXPORT  TIM1_CC_IRQHandler             [WEAK]
@@ -180,27 +180,27 @@ Default_Handler PROC
                 EXPORT  USART1_IRQHandler              [WEAK]
                 EXPORT  USART2_IRQHandler              [WEAK]
 
-WWDG_IRQHandler            
-PVD_IRQHandler               
-RTC_IRQHandler              
-FLASH_IRQHandler              
-RCC_IRQHandler                
-EXTI0_1_IRQHandler             
-EXTI2_3_IRQHandler             
-EXTI4_15_IRQHandler   
-DMA1_Channel1_IRQHandler     
-DMA1_Channel2_3_IRQHandler        
-ADC_COMP_IRQHandler          
+WWDG_IRQHandler
+PVD_IRQHandler
+RTC_IRQHandler
+FLASH_IRQHandler
+RCC_IRQHandler
+EXTI0_1_IRQHandler
+EXTI2_3_IRQHandler
+EXTI4_15_IRQHandler
+DMA1_Channel1_IRQHandler
+DMA1_Channel2_3_IRQHandler
+ADC_COMP_IRQHandler
 TIM1_BRK_UP_TRG_COM_IRQHandler
 TIM1_CC_IRQHandler
-TIM3_IRQHandler               
+TIM3_IRQHandler
 LPTIM1_IRQHandler
-TIM14_IRQHandler 
-TIM16_IRQHandler           
-TIM17_IRQHandler            
+TIM14_IRQHandler
+TIM16_IRQHandler
+TIM17_IRQHandler
 I2C1_IRQHandler
-SPI1_IRQHandler              
-USART1_IRQHandler          
+SPI1_IRQHandler
+USART1_IRQHandler
 USART2_IRQHandler
                 B       .
                 ENDP
@@ -219,7 +219,7 @@ USART2_IRQHandler
 
                 IMPORT  __use_two_region_memory
                 EXPORT  __user_initial_stackheap
-                    
+
 __user_initial_stackheap
 
                 LDR     R0, =  Heap_Mem

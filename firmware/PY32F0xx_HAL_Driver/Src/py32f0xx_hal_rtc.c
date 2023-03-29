@@ -1686,7 +1686,7 @@ static HAL_StatusTypeDef RTC_ExitInitMode(RTC_HandleTypeDef *hrtc)
 
   /* Disable the write protection for RTC registers */
   __HAL_RTC_WRITEPROTECTION_ENABLE(hrtc);
-	
+
 	tickstart = HAL_GetTick();
   /* Wait till RTC is in NOINIT state and if Time out is reached exit */
   while ((hrtc->Instance->CRL & RTC_CRL_RTOFF) == RTC_CRL_RTOFF)

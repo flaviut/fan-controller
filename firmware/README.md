@@ -1,5 +1,5 @@
 # Puya PY32 MCU SDK
-This repo contains a GCC/Makefile-based build system for Puya PY32 MCUs, including the PY32F002A, PY32F003, and PY32F030. 
+This repo contains a GCC/Makefile-based build system for Puya PY32 MCUs, including the PY32F002A, PY32F003, and PY32F030.
 
 Also included are vscode build/launch configs using Cortex-Debug and pyOCD.
 
@@ -10,7 +10,7 @@ First, get a copy of the DFP, which is found in Puya's PY32 SDK download availab
 
 Next, unzip `Puya.PY32F0xx_DFP.1.1.0.pack` (it's just a ZIP with a .pack extension). Then, copy the `pdesc` file to cmsis-pack-manager's repository along with all the other pdsc files (this will be located in your Python distribution). It needs to be renamed to `Puya.PY32F0xx_DFP.1.1.0.pdsc` (with the version numbers present).
 
-Next, copy the original DFP pack file to `Puya\PY32F0xx_DFP\1.1.0.pack` creating directories and renaming the pack file accordingly. 
+Next, copy the original DFP pack file to `Puya\PY32F0xx_DFP\1.1.0.pack` creating directories and renaming the pack file accordingly.
 
 Now, add the pack to cmsis-pack-manager:
 ```
@@ -46,4 +46,4 @@ Using the [J-Link Device Support Kit Segger Wiki page](https://wiki.segger.com/J
     </FlashBankInfo>
   </Device>
 </Database>
-``` 
+```

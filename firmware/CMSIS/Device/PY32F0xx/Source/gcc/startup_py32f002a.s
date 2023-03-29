@@ -66,35 +66,35 @@ __Vectors:
 	.long	SysTick_Handler       /* SysTick Handler */
 
 	/* External interrupts */
-	.long   0                              // 0Reserved 
-	.long   0                              // 1Reserved 
-	.long   0                              // 2Reserved 
+	.long   0                              // 0Reserved
+	.long   0                              // 1Reserved
+	.long   0                              // 2Reserved
 	.long   FLASH_IRQHandler               // 3FLASH
 	.long   RCC_IRQHandler                 // 4RCC
 	.long   EXTI0_1_IRQHandler             // 5EXTI Line 0 and 1
 	.long   EXTI2_3_IRQHandler             // 6EXTI Line 2 and 3
 	.long   EXTI4_15_IRQHandler            // 7EXTI Line 4 to 15
-	.long   0                              // 8Reserved 
-	.long   0                              // 9Reserved 
-	.long   0                              // 10Reserved 
-	.long   0                              // 11Reserved 
-	.long   ADC_COMP_IRQHandler            // 12ADC&COMP1 
+	.long   0                              // 8Reserved
+	.long   0                              // 9Reserved
+	.long   0                              // 10Reserved
+	.long   0                              // 11Reserved
+	.long   ADC_COMP_IRQHandler            // 12ADC&COMP1
 	.long   TIM1_BRK_UP_TRG_COM_IRQHandler // 13TIM1 Break, Update, Trigger and Commutation
 	.long   TIM1_CC_IRQHandler             // 14TIM1 Capture Compare
-	.long   0                              // 15Reserved 
-	.long   0                              // 16Reserved 
+	.long   0                              // 15Reserved
+	.long   0                              // 16Reserved
 	.long   LPTIM1_IRQHandler              // 17LPTIM1
-	.long   0                              // 18Reserved 
-	.long   0                              // 19Reserved 
-	.long   0                              // 20Reserved 
+	.long   0                              // 18Reserved
+	.long   0                              // 19Reserved
+	.long   0                              // 20Reserved
 	.long   TIM16_IRQHandler               // 21TIM16
-	.long   0                              // 22Reserved 
+	.long   0                              // 22Reserved
 	.long   I2C1_IRQHandler                // 23I2C1
-	.long   0                              // 24Reserved 
+	.long   0                              // 24Reserved
 	.long   SPI1_IRQHandler                // 25SPI1
 	.long   0                              // 26Reserved
 	.long   USART1_IRQHandler              // 27USART1
-	.long   0                              // 28Reserved 
+	.long   0                              // 28Reserved
 	.long   0                              // 29Reserved
 	.long   0                              // 30Reserved
 	.long   0                              // 31Reserved
@@ -237,23 +237,23 @@ Reset_Handler:
 	// reset NVIC if in rom debug
 	ldr     r0, =0x20000000
 	ldr     r2, =0x0
-	movs    r1, #0                 // for warning, 
-	add     r1, pc,#0              // for A1609W, 
+	movs    r1, #0                 // for warning,
+	add     r1, pc,#0              // for A1609W,
 	cmp     r1, r0
 	bls     .RAMCODE
 
-	// ram code base address. 
+	// ram code base address.
 	add     r2, r0,r2
 
 .RAMCODE:
 	// reset Vector table address.
-	ldr     r0, =0xE000ED08 
+	ldr     r0, =0xE000ED08
 	str     r2, [r0]
 
 #ifndef __NO_SYSTEM_INIT
 	bl	SystemInit
 #endif
-	
+
 #ifndef __START
 #define __START _start
 #endif
@@ -289,12 +289,12 @@ Default_Handler:
     def_irq_handler	SVC_Handler
     def_irq_handler	PendSV_Handler
     def_irq_handler	SysTick_Handler
-	def_irq_handler FLASH_IRQHandler              
-	def_irq_handler RCC_IRQHandler                
-	def_irq_handler EXTI0_1_IRQHandler             
-	def_irq_handler EXTI2_3_IRQHandler             
-	def_irq_handler EXTI4_15_IRQHandler   
-	def_irq_handler ADC_COMP_IRQHandler          
+	def_irq_handler FLASH_IRQHandler
+	def_irq_handler RCC_IRQHandler
+	def_irq_handler EXTI0_1_IRQHandler
+	def_irq_handler EXTI2_3_IRQHandler
+	def_irq_handler EXTI4_15_IRQHandler
+	def_irq_handler ADC_COMP_IRQHandler
 	def_irq_handler TIM1_BRK_UP_TRG_COM_IRQHandler
 	def_irq_handler TIM1_CC_IRQHandler
 	def_irq_handler LPTIM1_IRQHandler

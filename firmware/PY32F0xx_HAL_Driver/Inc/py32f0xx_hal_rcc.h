@@ -106,7 +106,7 @@ extern "C" {
                                            ((__DIV__) == RCC_HSI_DIV4)  || ((__DIV__) == RCC_HSI_DIV8) || \
                                            ((__DIV__) == RCC_HSI_DIV16) || ((__DIV__) == RCC_HSI_DIV32)|| \
                                            ((__DIV__) == RCC_HSI_DIV64) || ((__DIV__) == RCC_HSI_DIV128))
-                                         
+
 #define IS_RCC_LSI(__LSI__)               (((__LSI__) == RCC_LSI_OFF) || ((__LSI__) == RCC_LSI_ON))
 
 #if defined(RCC_PLL_SUPPORT)
@@ -117,7 +117,7 @@ extern "C" {
                                            ((__SOURCE__) == RCC_PLLSOURCE_HSI)  || \
                                            ((__SOURCE__) == RCC_PLLSOURCE_HSE))
 #endif
-                                         
+
 #define IS_RCC_CLOCKTYPE(__CLK__)         ((((__CLK__) & RCC_CLOCKTYPE_ALL) != 0x00UL) && (((__CLK__) & ~RCC_CLOCKTYPE_ALL) == 0x00UL))
 
 #if (defined(PY32F003PRE) || defined(PY32F002APRE))
@@ -732,7 +732,7 @@ typedef struct
                                                  UNUSED(tmpreg); \
                                                } while(0U)
 #endif
-                                               
+
 #if defined(SPI2)
 #define __HAL_RCC_SPI2_CLK_ENABLE()            do { \
                                                  __IO uint32_t tmpreg; \
@@ -742,7 +742,7 @@ typedef struct
                                                  UNUSED(tmpreg); \
                                                } while(0U)
 #endif
-                                               
+
 #if defined(USART2)
 #define __HAL_RCC_USART2_CLK_ENABLE()          do { \
                                                  __IO uint32_t tmpreg; \
@@ -892,7 +892,7 @@ typedef struct
                                                  UNUSED(tmpreg); \
                                                } while(0U)
 #endif
-  
+
 #if defined(TIM3)
 #define __HAL_RCC_TIM3_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_TIM3EN)
 #endif
@@ -909,7 +909,7 @@ typedef struct
 #define __HAL_RCC_DBGMCU_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_DBGEN)
 #define __HAL_RCC_PWR_CLK_DISABLE()            CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_PWREN)
 #define __HAL_RCC_LPTIM_CLK_DISABLE()          CLEAR_BIT(RCC->APBENR1, RCC_APBENR1_LPTIMEN)
-  
+
 #define __HAL_RCC_SYSCFG_CLK_DISABLE()         CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_SYSCFGEN)
 #define __HAL_RCC_TIM1_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_TIM1EN)
 #define __HAL_RCC_SPI1_CLK_DISABLE()           CLEAR_BIT(RCC->APBENR2, RCC_APBENR2_SPI1EN)
@@ -1479,7 +1479,7 @@ typedef struct
   * @}
   */
 #endif
-  
+
 #if defined(RCC_PLL_SUPPORT)
 /** @addtogroup RCC_Clock_Configuration
   * @{

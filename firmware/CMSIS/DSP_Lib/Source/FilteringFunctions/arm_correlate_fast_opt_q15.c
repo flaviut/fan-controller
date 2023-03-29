@@ -1,24 +1,24 @@
-/* ----------------------------------------------------------------------    
-* Copyright (C) 2010-2014 ARM Limited. All rights reserved.    
-*    
+/* ----------------------------------------------------------------------
+* Copyright (C) 2010-2014 ARM Limited. All rights reserved.
+*
 * $Date:        19. March 2015
 * $Revision: 	V.1.4.5
-*    
-* Project: 	    CMSIS DSP Library    
-* Title:		arm_correlate_fast_opt_q15.c    
-*    
-* Description:	Fast Q15 Correlation.    
-*    
+*
+* Project: 	    CMSIS DSP Library
+* Title:		arm_correlate_fast_opt_q15.c
+*
+* Description:	Fast Q15 Correlation.
+*
 * Target Processor: Cortex-M4/Cortex-M3
-*  
-* Redistribution and use in source and binary forms, with or without 
+*
+* Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
 * are met:
 *   - Redistributions of source code must retain the above copyright
 *     notice, this list of conditions and the following disclaimer.
 *   - Redistributions in binary form must reproduce the above copyright
 *     notice, this list of conditions and the following disclaimer in
-*     the documentation and/or other materials provided with the 
+*     the documentation and/or other materials provided with the
 *     distribution.
 *   - Neither the name of ARM LIMITED nor the names of its contributors
 *     may be used to endorse or promote products derived from this
@@ -27,7 +27,7 @@
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
 * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
 * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
 * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
@@ -35,50 +35,50 @@
 * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
 * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.    
+* POSSIBILITY OF SUCH DAMAGE.
 * -------------------------------------------------------------------- */
 
 #include "arm_math.h"
 
-/**    
- * @ingroup groupFilters    
+/**
+ * @ingroup groupFilters
  */
 
-/**    
- * @addtogroup Corr    
- * @{    
+/**
+ * @addtogroup Corr
+ * @{
  */
 
-/**    
- * @brief Correlation of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4.    
- * @param[in] *pSrcA points to the first input sequence.    
- * @param[in] srcALen length of the first input sequence.    
- * @param[in] *pSrcB points to the second input sequence.    
- * @param[in] srcBLen length of the second input sequence.    
- * @param[out] *pDst points to the location where the output result is written.  Length 2 * max(srcALen, srcBLen) - 1.    
- * @param[in]  *pScratch points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.   
- * @return none.    
- *    
- *    
- * \par Restrictions    
- *  If the silicon does not support unaligned memory access enable the macro UNALIGNED_SUPPORT_DISABLE    
- *	In this case input, output, scratch buffers should be aligned by 32-bit    
- *    
- *     
- * <b>Scaling and Overflow Behavior:</b>    
- *    
- * \par    
- * This fast version uses a 32-bit accumulator with 2.30 format.    
- * The accumulator maintains full precision of the intermediate multiplication results but provides only a single guard bit.    
- * There is no saturation on intermediate additions.    
- * Thus, if the accumulator overflows it wraps around and distorts the result.    
- * The input signals should be scaled down to avoid intermediate overflows.    
- * Scale down one of the inputs by 1/min(srcALen, srcBLen) to avoid overflow since a    
- * maximum of min(srcALen, srcBLen) number of additions is carried internally.    
- * The 2.30 accumulator is right shifted by 15 bits and then saturated to 1.15 format to yield the final result.    
- *    
- * \par    
- * See <code>arm_correlate_q15()</code> for a slower implementation of this function which uses a 64-bit accumulator to avoid wrap around distortion.    
+/**
+ * @brief Correlation of Q15 sequences (fast version) for Cortex-M3 and Cortex-M4.
+ * @param[in] *pSrcA points to the first input sequence.
+ * @param[in] srcALen length of the first input sequence.
+ * @param[in] *pSrcB points to the second input sequence.
+ * @param[in] srcBLen length of the second input sequence.
+ * @param[out] *pDst points to the location where the output result is written.  Length 2 * max(srcALen, srcBLen) - 1.
+ * @param[in]  *pScratch points to scratch buffer of size max(srcALen, srcBLen) + 2*min(srcALen, srcBLen) - 2.
+ * @return none.
+ *
+ *
+ * \par Restrictions
+ *  If the silicon does not support unaligned memory access enable the macro UNALIGNED_SUPPORT_DISABLE
+ *	In this case input, output, scratch buffers should be aligned by 32-bit
+ *
+ *
+ * <b>Scaling and Overflow Behavior:</b>
+ *
+ * \par
+ * This fast version uses a 32-bit accumulator with 2.30 format.
+ * The accumulator maintains full precision of the intermediate multiplication results but provides only a single guard bit.
+ * There is no saturation on intermediate additions.
+ * Thus, if the accumulator overflows it wraps around and distorts the result.
+ * The input signals should be scaled down to avoid intermediate overflows.
+ * Scale down one of the inputs by 1/min(srcALen, srcBLen) to avoid overflow since a
+ * maximum of min(srcALen, srcBLen) number of additions is carried internally.
+ * The 2.30 accumulator is right shifted by 15 bits and then saturated to 1.15 format to yield the final result.
+ *
+ * \par
+ * See <code>arm_correlate_q15()</code> for a slower implementation of this function which uses a 64-bit accumulator to avoid wrap around distortion.
  */
 
 void arm_correlate_fast_opt_q15(
@@ -113,11 +113,11 @@ void arm_correlate_fast_opt_q15(
   /* So, when srcBLen > srcALen, output pointer is made to point to the end of the output buffer */
   /* and the destination pointer modifier, inc is set to -1 */
   /* If srcALen > srcBLen, zero pad has to be done to srcB to make the two inputs of same length */
-  /* But to improve the performance,        
+  /* But to improve the performance,
    * we include zeroes in the output instead of zero padding either of the the inputs*/
-  /* If srcALen > srcBLen,        
+  /* If srcALen > srcBLen,
    * (srcALen - srcBLen) zeroes has to included in the starting of the output buffer */
-  /* If srcALen < srcBLen,        
+  /* If srcALen < srcBLen,
    * (srcALen - srcBLen) zeroes has to included in the ending of the output buffer */
   if(srcALen >= srcBLen)
   {
@@ -130,9 +130,9 @@ void arm_correlate_fast_opt_q15(
     /* Number of output samples is calculated */
     outBlockSize = (2u * srcALen) - 1u;
 
-    /* When srcALen > srcBLen, zero padding is done to srcB        
-     * to make their lengths equal.        
-     * Instead, (outBlockSize - (srcALen + srcBLen - 1))        
+    /* When srcALen > srcBLen, zero padding is done to srcB
+     * to make their lengths equal.
+     * Instead, (outBlockSize - (srcALen + srcBLen - 1))
      * number of output samples are made zero */
     j = outBlockSize - (srcALen + (srcBLen - 1u));
 
@@ -183,7 +183,7 @@ void arm_correlate_fast_opt_q15(
   /* Apply loop unrolling and do 4 Copies simultaneously. */
   j = srcALen >> 2u;
 
-  /* First part of the processing with loop unrolling copies 4 data points at a time.       
+  /* First part of the processing with loop unrolling copies 4 data points at a time.
    ** a second loop below copies for the remaining 1 to 3 samples. */
   while(j > 0u)
   {
@@ -197,7 +197,7 @@ void arm_correlate_fast_opt_q15(
     j--;
   }
 
-  /* If the count is not a multiple of 4, copy remaining samples here.       
+  /* If the count is not a multiple of 4, copy remaining samples here.
    ** No loop unrolling is used. */
   j = srcALen % 0x4u;
 
@@ -225,7 +225,7 @@ void arm_correlate_fast_opt_q15(
 /* Apply loop unrolling and do 4 Copies simultaneously. */
   j = (srcBLen - 1u) >> 2u;
 
-  /* First part of the processing with loop unrolling copies 4 data points at a time.       
+  /* First part of the processing with loop unrolling copies 4 data points at a time.
    ** a second loop below copies for the remaining 1 to 3 samples. */
   while(j > 0u)
   {
@@ -239,7 +239,7 @@ void arm_correlate_fast_opt_q15(
     j--;
   }
 
-  /* If the count is not a multiple of 4, copy remaining samples here.       
+  /* If the count is not a multiple of 4, copy remaining samples here.
    ** No loop unrolling is used. */
   j = (srcBLen - 1u) % 0x4u;
 
@@ -326,7 +326,7 @@ void arm_correlate_fast_opt_q15(
 #endif
 
       acc3 = __SMLADX(x3, y2, acc3);
-#else	 
+#else
 
       /* Read four samples from smaller buffer */
 	  a = *pIn2;
@@ -337,14 +337,14 @@ void arm_correlate_fast_opt_q15(
 #else
       y1 = __PKHBT(b, a, 16);
 #endif
-	  
+
 	  a = *(pIn2 + 2);
 	  b = *(pIn2 + 3);
 #ifndef ARM_MATH_BIG_ENDIAN
       y2 = __PKHBT(a, b, 16);
 #else
       y2 = __PKHBT(b, a, 16);
-#endif				
+#endif
 
       acc0 = __SMLAD(x1, y1, acc0);
 
@@ -507,6 +507,6 @@ void arm_correlate_fast_opt_q15(
   }
 }
 
-/**    
- * @} end of Corr group    
+/**
+ * @} end of Corr group
  */

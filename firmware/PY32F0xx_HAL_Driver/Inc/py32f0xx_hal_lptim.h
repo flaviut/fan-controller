@@ -55,7 +55,7 @@ typedef struct
   uint32_t Prescaler;      /*!< Specifies the counter clock Prescaler.
                            This parameter can be a value of @ref LPTIM_Clock_Prescaler */
 
-  uint32_t UpdateMode;     /*!< Specifies whether to update immediately or after the end 
+  uint32_t UpdateMode;     /*!< Specifies whether to update immediately or after the end
                            of current period.
                            This parameter can be a value of @ref LPTIM_Updating_Mode */
 
@@ -160,7 +160,7 @@ typedef  void (*pLPTIM_CallbackTypeDef)(LPTIM_HandleTypeDef * hlptim); /*!< poin
 /**
   * @}
   */
-  
+
 /** @defgroup LPTIM_Interrupts_Definition LPTIM Interrupts Definition
   * @{
   */

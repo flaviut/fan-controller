@@ -317,7 +317,7 @@ typedef struct
 
 /** @defgroup ADC_LL_EC_FLAG ADC flags
   * @brief    Flags defines which can be used with LL_ADC_ReadReg function
-  * @{ 
+  * @{
   */
 
 #define LL_ADC_FLAG_EOC                    ADC_ISR_EOC        /*!< ADC flag ADC group regular end of unitary conversion */
@@ -331,7 +331,7 @@ typedef struct
 
 /** @defgroup ADC_LL_EC_IT ADC interruptions for configuration (interruption enable or disable)
   * @brief    IT defines which can be used with LL_ADC_ReadReg and  LL_ADC_WriteReg functions
-  * @{ 
+  * @{
   */
 
 #define LL_ADC_IT_EOC                      ADC_IER_EOCIE      /*!< ADC interruption ADC group regular end of unitary conversion */
@@ -391,7 +391,7 @@ typedef struct
   */
 
 /** @defgroup ADC_LL_EC_RESOLUTION  ADC instance - Resolution
-  * @{ 
+  * @{
   */
 #define LL_ADC_RESOLUTION_12B              (0x00000000U)                             /*!< ADC resolution 12 bits */
 #define LL_ADC_RESOLUTION_10B              (ADC_CFGR1_RESSEL_0)                      /*!< ADC resolution 10 bits */
@@ -411,7 +411,7 @@ typedef struct
   */
 
 /** @defgroup ADC_LL_EC_LP_MODE  ADC instance - Low power mode
-  * @{  
+  * @{
   */
 #define LL_ADC_LP_MODE_NONE                (0x00000000U)                             /*!< No ADC low power mode activated */
 #define LL_ADC_LP_AUTOWAIT                 (ADC_CFGR1_WAIT)                          /*!< ADC low power mode auto delay: Dynamic low power mode, ADC conversions are performed only when necessary (when previous ADC conversion data is read). See description with function @ref LL_ADC_SetLowPowerMode(). */
@@ -428,7 +428,7 @@ typedef struct
   */
 
 /** @defgroup ADC_LL_EC_CHANNEL  ADC instance - Channel number
-  * @{ 
+  * @{
   */
 #define LL_ADC_CHANNEL_0                   (ADC_CHANNEL_0_NUMBER  | ADC_CHANNEL_0_BITFIELD ) /*!< ADC external channel (channel connected to GPIO pin) ADCx_IN0  */
 #define LL_ADC_CHANNEL_1                   (ADC_CHANNEL_1_NUMBER  | ADC_CHANNEL_1_BITFIELD ) /*!< ADC external channel (channel connected to GPIO pin) ADCx_IN1  */
@@ -449,7 +449,7 @@ typedef struct
   */
 
 /** @defgroup ADC_LL_EC_REG_TRIGGER_SOURCE  ADC group regular - Trigger source
-  * @{ 
+  * @{
   */
 #define LL_ADC_REG_TRIG_SOFTWARE           (0x00000000U)                                                             /*!< ADC group regular conversion trigger internal: SW start. */
 #define LL_ADC_REG_TRIG_EXT_TIM1_TRGO      (                                          ADC_REG_TRIG_EXT_EDGE_DEFAULT) /*!< ADC group regular conversion trigger from external IP: TIM1 TRGO. Trigger edge set to rising edge (default setting). */
@@ -517,7 +517,7 @@ typedef struct
   */
 
 /** @defgroup ADC_LL_EC_CHANNEL_SAMPLINGTIME  Channel - Sampling time
-  * @{  
+  * @{
   */
 #define LL_ADC_SAMPLINGTIME_3CYCLES_5      (0x00000000U)                                         /*!< Sampling time 3.5 ADC clock cycles */
 #define LL_ADC_SAMPLINGTIME_5CYCLES_5      (                                  ADC_SMPR_SMP_0)    /*!< Sampling time 5.5 ADC clock cycles */
@@ -540,7 +540,7 @@ typedef struct
   */
 
 /** @defgroup ADC_LL_EC_AWD_CHANNELS  Analog watchdog - Monitored channels
-  * @{   
+  * @{
   */
 #define LL_ADC_AWD_DISABLE                 (0x00000000U)                                                                              /*!< ADC analog watchdog monitoring disabled */
 #define LL_ADC_AWD_ALL_CHANNELS_REG        (                                                    ADC_CFGR1_AWDEN                   )   /*!< ADC analog watchdog monitoring of all channels, converted by group regular only */
@@ -723,7 +723,7 @@ typedef struct
   *         @arg @ref LL_ADC_CHANNEL_12
   *         @arg @ref LL_ADC_CHANNEL_VREFINT
   *         @arg @ref LL_ADC_CHANNEL_TEMPSENSOR
-  * @retval Value between Min_Data=0 and Max_Data=12  
+  * @retval Value between Min_Data=0 and Max_Data=12
   */
 #define __LL_ADC_CHANNEL_TO_DECIMAL_NB(__CHANNEL__)                                                               \
   ((((__CHANNEL__) & ADC_CHANNEL_ID_BITFIELD_MASK) == 0U)                                                         \
@@ -909,7 +909,7 @@ typedef struct
   *         @arg @ref LL_ADC_CHANNEL_VREFINT
   *         @arg @ref LL_ADC_CHANNEL_TEMPSENSOR
   * @retval Value "0" if the internal channel selected is not available on the ADC instance selected.
-  *         Value "1" if the internal channel selected is available on the ADC instance selected.  
+  *         Value "1" if the internal channel selected is available on the ADC instance selected.
   */
 
 #define __LL_ADC_IS_CHANNEL_INTERNAL_AVAILABLE(__ADC_INSTANCE__, __CHANNEL__)  \
@@ -1153,7 +1153,7 @@ typedef struct
   *         @arg @ref LL_ADC_RESOLUTION_10B
   *         @arg @ref LL_ADC_RESOLUTION_8B
   *         @arg @ref LL_ADC_RESOLUTION_6B
-  * @retval Analog reference voltage (unit: mV)       
+  * @retval Analog reference voltage (unit: mV)
   */
 #define __LL_ADC_CALC_VREFANALOG_VOLTAGE(__VREFINT_ADC_DATA__,__ADC_RESOLUTION__)                   \
   (4095*( VREFINT_CAL_VREF)/ __LL_ADC_CONVERT_DATA_RESOLUTION((__VREFINT_ADC_DATA__),(__ADC_RESOLUTION__),LL_ADC_RESOLUTION_12B))
@@ -1201,7 +1201,7 @@ typedef struct
   *         @arg @ref LL_ADC_RESOLUTION_10B
   *         @arg @ref LL_ADC_RESOLUTION_8B
   *         @arg @ref LL_ADC_RESOLUTION_6B
-  * @retval Temperature (unit: degree Celsius)   
+  * @retval Temperature (unit: degree Celsius)
   */
 #define __LL_ADC_CALC_TEMPERATURE(__VREFANALOG_VOLTAGE__,\
                                   __TEMPSENSOR_ADC_DATA__,\
@@ -1364,7 +1364,7 @@ __STATIC_INLINE uint32_t LL_ADC_DMA_GetRegAddr(ADC_TypeDef *ADCx, uint32_t Regis
   * @param  PathInternal This parameter can be a combination of the following values:
   *         @arg @ref LL_ADC_PATH_INTERNAL_NONE
   *         @arg @ref LL_ADC_PATH_INTERNAL_VREFINT
-  *         @arg @ref LL_ADC_PATH_INTERNAL_TEMPSENSOR   
+  *         @arg @ref LL_ADC_PATH_INTERNAL_TEMPSENSOR
   * @retval None
   */
 __STATIC_INLINE void LL_ADC_SetCommonPathInternalCh(ADC_Common_TypeDef *ADCxy_COMMON, uint32_t PathInternal)
@@ -1486,7 +1486,7 @@ __STATIC_INLINE void LL_ADC_SetResolution(ADC_TypeDef *ADCx, uint32_t Resolution
   *         @arg @ref LL_ADC_RESOLUTION_12B
   *         @arg @ref LL_ADC_RESOLUTION_10B
   *         @arg @ref LL_ADC_RESOLUTION_8B
-  *         @arg @ref LL_ADC_RESOLUTION_6B   
+  *         @arg @ref LL_ADC_RESOLUTION_6B
   */
 __STATIC_INLINE uint32_t LL_ADC_GetResolution(ADC_TypeDef *ADCx)
 {
@@ -1569,7 +1569,7 @@ __STATIC_INLINE uint32_t LL_ADC_GetDataAlignment(ADC_TypeDef *ADCx)
   * @param  ADCx ADC instance
   * @param  LowPowerMode This parameter can be one of the following values:
   *         @arg @ref LL_ADC_LP_MODE_NONE
-  *         @arg @ref LL_ADC_LP_AUTOWAIT           
+  *         @arg @ref LL_ADC_LP_AUTOWAIT
   * @retval None
   */
 __STATIC_INLINE void LL_ADC_SetLowPowerMode(ADC_TypeDef *ADCx, uint32_t LowPowerMode)
@@ -1614,7 +1614,7 @@ __STATIC_INLINE void LL_ADC_SetLowPowerMode(ADC_TypeDef *ADCx, uint32_t LowPower
   * @param  ADCx ADC instance
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_ADC_LP_MODE_NONE
-  *         @arg @ref LL_ADC_LP_AUTOWAIT         
+  *         @arg @ref LL_ADC_LP_AUTOWAIT
   */
 __STATIC_INLINE uint32_t LL_ADC_GetLowPowerMode(ADC_TypeDef *ADCx)
 {
@@ -2125,7 +2125,7 @@ __STATIC_INLINE void LL_ADC_REG_SetSequencerChRem(ADC_TypeDef *ADCx, uint32_t Ch
   *         @arg @ref LL_ADC_CHANNEL_11
   *         @arg @ref LL_ADC_CHANNEL_12
   *         @arg @ref LL_ADC_CHANNEL_VREFINT
-  *         @arg @ref LL_ADC_CHANNEL_TEMPSENSOR   
+  *         @arg @ref LL_ADC_CHANNEL_TEMPSENSOR
   */
 __STATIC_INLINE uint32_t LL_ADC_REG_GetSequencerChannels(ADC_TypeDef *ADCx)
 {
@@ -2598,7 +2598,7 @@ __STATIC_INLINE void LL_ADC_Enable(ADC_TypeDef *ADCx)
 /**
   * @brief  Reset the selected ADC instance.
   * @note   On this PY32 serie, Reset the ADC
-  * @param  ADCx ADC instance                 
+  * @param  ADCx ADC instance
   * @retval None
   */
 __STATIC_INLINE void LL_ADC_Reset(ADC_TypeDef *ADCx)
@@ -2777,10 +2777,10 @@ __STATIC_INLINE uint8_t LL_ADC_REG_ReadConversionData6(ADC_TypeDef *ADCx)
   * @brief  Disable the selected ADC instance.
   * @note   On this PY32 serie, Disable the selected ADC instance
   * @param  ADCx ADC instance
-  * @retval 0: ADC Disable Failed,1:ADC Disable Success.       
+  * @retval 0: ADC Disable Failed,1:ADC Disable Success.
   */
 __STATIC_INLINE ErrorStatus LL_ADC_Disable(ADC_TypeDef *ADCx)
-{  
+{
   ErrorStatus status = SUCCESS;
   uint32_t tmpCFGR1=ADCx->CFGR1;
   __IO uint32_t timeout_cpu_cycles = 0U;
@@ -2793,7 +2793,7 @@ __STATIC_INLINE ErrorStatus LL_ADC_Disable(ADC_TypeDef *ADCx)
     /* have an external trigger event occurring during the conversion stop    */
     /* ADC disable process.                                                   */
     LL_ADC_REG_SetTriggerSource(ADCx, LL_ADC_REG_TRIG_SOFTWARE);
-    
+
     /* Stop potential ADC conversion on going on ADC group regular.           */
     if(LL_ADC_REG_IsConversionOngoing(ADCx) != 0U)
     {
@@ -2833,11 +2833,11 @@ __STATIC_INLINE ErrorStatus LL_ADC_Disable(ADC_TypeDef *ADCx)
         status = ERROR;
       }
     }
-    
+
     /* Restore the CFGR1 Configure                       */
     ADCx->CFGR1=tmpCFGR1;
   }
-  
+
   return status;
 }
 
@@ -3129,7 +3129,7 @@ __STATIC_INLINE uint32_t LL_ADC_IsEnabledIT_EOSMP(ADC_TypeDef *ADCx)
   *         (0: interrupt disabled, 1: interrupt enabled).
   * @rmtoll IER      AWDIE          LL_ADC_IsEnabledIT_AWD
   * @param  ADCx ADC instance
-  * @retval State of bit (1 or 0).   
+  * @retval State of bit (1 or 0).
   */
 __STATIC_INLINE uint32_t LL_ADC_IsEnabledIT_AWD(ADC_TypeDef *ADCx)
 {
@@ -3152,7 +3152,7 @@ __STATIC_INLINE uint32_t LL_ADC_IsEnabledIT_AWD(ADC_TypeDef *ADCx)
   *         @arg @ref LL_ADC_CAL_SAMPLINGTIME_4CYCLES
   *         @arg @ref LL_ADC_CAL_SAMPLINGTIME_8CYCLES
   *         @arg @ref LL_ADC_CAL_SAMPLINGTIME_1CYCLE
-  * @retval None   
+  * @retval None
   */
 __STATIC_INLINE void LL_ADC_SetCalibrationSamplingTime(ADC_TypeDef *ADCx, uint32_t CalibrationSamplingTime)
 {
@@ -3168,7 +3168,7 @@ __STATIC_INLINE void LL_ADC_SetCalibrationSamplingTime(ADC_TypeDef *ADCx, uint32
   *         @arg @ref LL_ADC_CAL_SAMPLINGTIME_2CYCLES
   *         @arg @ref LL_ADC_CAL_SAMPLINGTIME_4CYCLES
   *         @arg @ref LL_ADC_CAL_SAMPLINGTIME_8CYCLES
-  *         @arg @ref LL_ADC_CAL_SAMPLINGTIME_1CYCLE   
+  *         @arg @ref LL_ADC_CAL_SAMPLINGTIME_1CYCLE
   */
 __STATIC_INLINE uint32_t LL_ADC_GetCalibrationSamplingTime(ADC_TypeDef *ADCx)
 {
@@ -3194,7 +3194,7 @@ __STATIC_INLINE void LL_ADC_ClearCalibrationStatus(ADC_TypeDef *ADCx)
   *         @arg @ref LL_ADC_CAL_STATUS_SUCCESS
   *         @arg @ref LL_ADC_CAL_STATUS_FAIL
   *         @arg @ref LL_ADC_CAL_STATUS_ONGOING
-  *         @arg @ref LL_ADC_CAL_STATUS_INVALID   
+  *         @arg @ref LL_ADC_CAL_STATUS_INVALID
   */
 
 __STATIC_INLINE uint32_t LL_ADC_GetCalibrationStatus(ADC_TypeDef *ADCx)
@@ -3209,7 +3209,7 @@ __STATIC_INLINE uint32_t LL_ADC_GetCalibrationStatus(ADC_TypeDef *ADCx)
   * @param  This parameter can be one of the following values:
             @arg @ref LL_ADC_CAL_MODE_OFFSET
   *         @arg @ref LL_ADC_CAL_MODE_OFFSETANDLINEARITY
-  * @retval None     
+  * @retval None
   */
 __STATIC_INLINE void LL_ADC_SetCalibrationMode(ADC_TypeDef *ADCx,uint32_t CalibrationMode)
 {
@@ -3222,7 +3222,7 @@ __STATIC_INLINE void LL_ADC_SetCalibrationMode(ADC_TypeDef *ADCx,uint32_t Calibr
   * @param  ADCx ADC instance
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_ADC_CAL_MODE_OFFSET
-  *         @arg @ref LL_ADC_CAL_MODE_OFFSETANDLINEARITY 
+  *         @arg @ref LL_ADC_CAL_MODE_OFFSETANDLINEARITY
   */
 __STATIC_INLINE uint32_t LL_ADC_GetCalibrationMode(ADC_TypeDef *ADCx)
 {

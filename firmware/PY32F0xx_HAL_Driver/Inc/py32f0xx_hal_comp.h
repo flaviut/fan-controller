@@ -73,8 +73,8 @@ typedef struct
 
   uint32_t OutputPol;          /*!< Set comparator output polarity.
                                     This parameter can be a value of @ref COMP_OutputPolarity */
-                                   
-  uint32_t DigitalFilter;      /*!< Specifies the digital filter. the filter is prohibited 
+
+  uint32_t DigitalFilter;      /*!< Specifies the digital filter. the filter is prohibited
                                     when the value is zero.
                                     This parameter must be a number between 0 and 0xFFFF */
 
