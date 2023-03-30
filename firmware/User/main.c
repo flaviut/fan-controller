@@ -15,15 +15,15 @@ void checkOk(int ok) {
     }
 }
 
-static const int SYSCLOCK_FREQ_HZ = (int) 16e6;
+static const int SYSCLOCK_FREQ_HZ = (int) 12e6;
 
 static void APP_SystemClockConfig(void) {
     /** use internal oscillator, sysclk = 16MHz */
     checkOk(HAL_RCC_OscConfig(&(RCC_OscInitTypeDef){
         .OscillatorType = RCC_OSCILLATORTYPE_HSI,
         .HSIState = RCC_HSI_ON,
-        .HSIDiv = RCC_HSI_DIV2, /* 16MHz */
-        .HSICalibrationValue = RCC_HSICALIBRATION_8MHz,
+        .HSIDiv = RCC_HSI_DIV2, /* 12MHz */
+        .HSICalibrationValue = RCC_HSICALIBRATION_24MHz,
     }));
     // make sure we have a LSI for the watchdog
     checkOk(HAL_RCC_OscConfig(&(RCC_OscInitTypeDef){
@@ -31,13 +31,13 @@ static void APP_SystemClockConfig(void) {
         .LSIState = RCC_LSI_ON,
     }));
 
-    checkOk(HAL_RCC_ClockConfig(&(RCC_ClkInitTypeDef){
-                                    .ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1,
-                                    .SYSCLKSource = RCC_SYSCLKSOURCE_HSI, /* SYSCLK source */
-                                    .AHBCLKDivider = RCC_SYSCLK_DIV1,
-                                    .APB1CLKDivider = RCC_HCLK_DIV2,
-                                },
-                                FLASH_LATENCY_0));// latency 0 for <= 24MHz
+    checkOk(HAL_RCC_ClockConfig(
+        &(RCC_ClkInitTypeDef){
+            .ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1,
+            .SYSCLKSource = RCC_SYSCLKSOURCE_HSI, /* SYSCLK source */
+            .AHBCLKDivider = RCC_SYSCLK_DIV1,
+        },
+        FLASH_LATENCY_0));// latency 0 for <= 24MHz
 }
 
 // uses LSI clock, 32kHz
@@ -58,7 +58,7 @@ static void APP_Watchdog() {
 ADC_HandleTypeDef hadc1 = {
     .Instance = ADC1,
     .Init = (ADC_InitTypeDef){
-        .ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV32,           /* Analog ADC clock source is PCLK*/
+        .ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4,            /* Analog ADC clock source is PCLK*/
         .Resolution = ADC_RESOLUTION_12B,                      /* conversion resolution 12bit*/
         .DataAlign = ADC_DATAALIGN_RIGHT,                      /* data right alignment */
         .ScanConvMode = ADC_SCAN_DIRECTION_FORWARD,            /* scan sequence direction: up (from channel 0 to channel 11)*/
@@ -78,11 +78,24 @@ static void APP_AdcConfig(void) {
     __HAL_RCC_ADC_RELEASE_RESET(); /* Reset ADC */
     __HAL_RCC_ADC_CLK_ENABLE();    /* Enable ADC clock */
 
+    // PA3 is TEMP_SENSE
+    HAL_GPIO_Init(
+        GPIOA,
+        &(GPIO_InitTypeDef){
+            .Mode = GPIO_MODE_ANALOG,
+            .Pin = GPIO_PIN_3});
+    // PA4 is FAN_SENSE
+    HAL_GPIO_Init(
+        GPIOA,
+        &(GPIO_InitTypeDef){
+            .Mode = GPIO_MODE_ANALOG,
+            .Pin = GPIO_PIN_4});
+
     checkOk(HAL_ADC_Calibration_Start(&hadc1));
     checkOk(HAL_ADC_Init(&hadc1));
     checkOk(HAL_ADC_ConfigChannel(&hadc1, &(ADC_ChannelConfTypeDef){
-                                              .Rank = ADC_RANK_NONE,
-                                              .Channel = ADC_CHANNEL_0,
+                                              .Rank = ADC_RANK_CHANNEL_NUMBER,
+                                              .Channel = ADC_CHANNEL_3,
                                           }));
 }
 
@@ -134,19 +147,35 @@ TIM_HandleTypeDef htim1 = {
 };
 
 static void APP_PwmOutConfig() {
+    __HAL_RCC_TIM1_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
     // PWM output 200kHz
     // Pin 7, PA1, TIM1_CH4
+    HAL_GPIO_Init(
+        GPIOA,
+        &(GPIO_InitTypeDef){
+            .Mode = GPIO_MODE_AF_PP,
+            .Pull = GPIO_PULLUP,
+            .Speed = GPIO_SPEED_FREQ_HIGH,
+            .Pin = GPIO_PIN_1,
+            .Alternate = GPIO_AF13_TIM1,
+        });
+
     checkOk(HAL_TIM_Base_Init(&htim1));
-    checkOk(HAL_TIM_PWM_ConfigChannel(&htim1, &(TIM_OC_InitTypeDef){
-                                                  .OCMode = TIM_OCMODE_PWM1,
-                                                  .OCFastMode = TIM_OCFAST_DISABLE,
-                                                  .OCPolarity = TIM_OCPOLARITY_HIGH,
-                                                  .OCNPolarity = TIM_OCNPOLARITY_HIGH,
-                                                  .OCIdleState = TIM_OCIDLESTATE_RESET,
-                                                  .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-                                                  .Pulse = 0,// duty cycle = 0%
-                                              },
-                                      TIM_CHANNEL_4));
+    checkOk(HAL_TIM_PWM_ConfigChannel(
+        &htim1,
+        &(TIM_OC_InitTypeDef){
+            .OCMode = TIM_OCMODE_PWM1,
+            .OCFastMode = TIM_OCFAST_DISABLE,
+            // invert polarity because P-channel mosfet inverts again
+            .OCPolarity = TIM_OCPOLARITY_LOW,
+            .OCNPolarity = TIM_OCPOLARITY_LOW,
+            .OCIdleState = TIM_OCIDLESTATE_RESET,
+            .OCNIdleState = TIM_OCNIDLESTATE_RESET,
+            .Pulse = htim1.Init.Period / 3,// duty cycle = 0%
+        },
+        TIM_CHANNEL_4));
     checkOk(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4));
 }
 
@@ -167,18 +196,12 @@ int main(void) {
     APP_PwmOutConfig();
     SystemCoreClockUpdate();
 
-    HAL_GPIO_Init(GPIOA, &(GPIO_InitTypeDef){
-                             .Mode = GPIO_MODE_ANALOG,
-                             .Pin = GPIO_PIN_3});
-    HAL_GPIO_Init(GPIOA, &(GPIO_InitTypeDef){
-                             .Mode = GPIO_MODE_ANALOG,
-                             .Pin = GPIO_PIN_4});
 
     while (1) {
         uint32_t allTempCounts = 0;
         for (int i = 0; i < 100; i++) {
             checkOk(HAL_ADC_Start(&hadc1));
-            checkOk(HAL_ADC_PollForConversion(&hadc1, 10000));
+            checkOk(HAL_ADC_PollForConversion(&hadc1, 1));
             allTempCounts += HAL_ADC_GetValue(&hadc1);
         }
         uint32_t avgTempCounts = allTempCounts / 100;
@@ -190,24 +213,12 @@ int main(void) {
         static const float PTC_NOMINAL_OHMS = 100000.0f;
         static const float PTC_NOMINAL_TEMP = 298.15f;
         static const float PTC_BETA = 3435.0f;
-        float invTempC = (1.0f / PTC_NOMINAL_TEMP) +
+        float invTempK = (1.0f / PTC_NOMINAL_TEMP) +
                          (1.0f / PTC_BETA) * logf(ptcResistance / PTC_NOMINAL_OHMS);
-        float tempC = 1.0f / invTempC;
+        static const int TEMP_OFFSET_C = 273;
+        int tempC = (int) (1.0f / invTempK) - TEMP_OFFSET_C;
 
-
-        static const float PWM_PERIOD_S = 1.0f / (float) PWM_FREQ_HZ;// 5us
-        static const float INDUCTANCE_H = 1e-5f;                     // 10uH
-        static const float TYP_CURRENT_A = 0.1f;                     // 100mA
-
-        float outputPercent = fanCurveRatio((int) tempC);
-        // Vo% = Vi / ((2*L*Io/(D^2*Vi*T)) + 1)
-        // Vi = 1
-        // D = sqrt((2*L*Io*Vo%) / ((Vo%-1) * T))
-        float dutyCycle = sqrtf(
-            (2.0f * INDUCTANCE_H * TYP_CURRENT_A * outputPercent) /
-            ((outputPercent - 1.0f) * PWM_PERIOD_S));
-
-        setPwmDutyCycle(dutyCycle);
+        setPwmDutyCycle(fanCurveRatio((int) tempC));
         HAL_IWDG_Refresh(&hiwdg);
     }
 }

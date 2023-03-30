@@ -38,7 +38,7 @@ ARCH_FLAGS	:= -mthumb -mcpu=cortex-m0plus
 DEBUG_FLAGS ?= -gdwarf-3
 
 # c flags
-OPT			?= -Og -ffast-math -flto
+OPT			?= -Og -flto
 CSTD		?= -std=c99
 TGT_CFLAGS 	+= $(ARCH_FLAGS) $(DEBUG_FLAGS) $(OPT) $(CSTD) $(addprefix -D, $(LIB_FLAGS)) -Wall -ffunction-sections -fdata-sections
 
