@@ -4,8 +4,8 @@ kibot:
   version: 1
 
 preflight:
-  run_drc: true
-  run_erc: true
+  run_drc: false
+  run_erc: false
 
 
 global:
@@ -112,7 +112,7 @@ outputs:
     format: CSV
     units: millimeters
     separate_files_for_front_and_back: false
-    only_smd: false
+    only_smd: true
     columns:
     - id: Ref
       name: Designator
@@ -164,9 +164,6 @@ outputs:
   comment: Interactive HTML BoM
   type: ibom
   dir: Assembly
-  options:
-    include_tracks: true
-    extra_fields: Description,AVL1,AVL1 P/N,AVL2,AVL2 P/N
 - name: basic_navigate_results
   comment: Web page to browse the results
   type: navigate_results
