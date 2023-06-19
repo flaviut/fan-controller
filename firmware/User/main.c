@@ -15,6 +15,7 @@ void checkOk(int ok) {
     }
 }
 
+static const float SUPPLY_VOLTS = 5.0f;
 static const int SYSCLOCK_FREQ_HZ = (int) 12e6;
 
 static void APP_SystemClockConfig(void) {
@@ -188,6 +189,52 @@ static void setPwmDutyCycle(float dutyCycle) {
     __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_4, (uint32_t) (dutyCycle * htim1.Init.Period));
 }
 
+typedef struct {
+    uint32_t tempCounts;
+    uint32_t fanCounts;
+} AdcResults;
+
+AdcResults readAdc() {
+    checkOk(HAL_ADC_Start(&hadc1));
+
+    uint32_t allTempCounts = 0;
+    uint32_t allFanCounts = 0;
+    static const int NUM_SAMPLES = 64;
+    for (int i = 0; i < NUM_SAMPLES; i++) {
+        // 80us/conversion, 10ms total
+        checkOk(HAL_ADC_PollForConversion(&hadc1, 1));
+        allTempCounts += HAL_ADC_GetValue(&hadc1);
+        checkOk(HAL_ADC_PollForConversion(&hadc1, 1));
+        allFanCounts += HAL_ADC_GetValue(&hadc1);
+    }
+    return (AdcResults){
+        .tempCounts = allTempCounts / NUM_SAMPLES,
+        .fanCounts = allFanCounts / NUM_SAMPLES};
+}
+
+int tempCountsToC(uint32_t tempCounts) {
+    float tempVolts = (float) tempCounts / 4096.0f;
+    // voltage cancels out, we just use the ratio to calculate the resistance
+    assert(tempVolts >= 0.0f && tempVolts <= 1.0f);
+    static const float REFERENCE_OHMS = 100000.0f;
+    float ptcResistance = REFERENCE_OHMS * (1.0f / tempVolts - 1.0f);
+
+    // https://en.wikipedia.org/wiki/Thermistor#B_or_%CE%B2_parameter_equation
+    static const float PTC_NOMINAL_OHMS = 100000.0f;
+    static const float PTC_NOMINAL_TEMP = 298.15f;
+    static const float PTC_BETA = 3435.0f;
+    float invTempK = (1.0f / PTC_NOMINAL_TEMP) +
+                     (1.0f / PTC_BETA) * logf(ptcResistance / PTC_NOMINAL_OHMS);
+    static const float TEMP_OFFSET_C = 273.15f;
+    return (int) ((1.0f / invTempK) - TEMP_OFFSET_C);
+}
+
+enum ProcessState {
+    FAN_OFF,
+    FAN_SPINUP,
+    FAN_ON,
+};
+
 int main(void) {
     HAL_Init();
     APP_SystemClockConfig();
@@ -196,29 +243,20 @@ int main(void) {
     APP_PwmOutConfig();
     SystemCoreClockUpdate();
 
-
     while (1) {
-        uint32_t allTempCounts = 0;
-        for (int i = 0; i < 100; i++) {
-            checkOk(HAL_ADC_Start(&hadc1));
-            checkOk(HAL_ADC_PollForConversion(&hadc1, 1));
-            allTempCounts += HAL_ADC_GetValue(&hadc1);
-        }
-        uint32_t avgTempCounts = allTempCounts / 100;
-        static const float SUPPLY_VOLTS = 3.3f;
-        float tempVolts = (float) avgTempCounts * SUPPLY_VOLTS / 4096.0f;
-        static const float REFERENCE_OHMS = 100000.0f;
-        float ptcResistance = REFERENCE_OHMS * (SUPPLY_VOLTS / tempVolts - 1.0f);
-        // https://en.wikipedia.org/wiki/Thermistor#B_or_%CE%B2_parameter_equation
-        static const float PTC_NOMINAL_OHMS = 100000.0f;
-        static const float PTC_NOMINAL_TEMP = 298.15f;
-        static const float PTC_BETA = 3435.0f;
-        float invTempK = (1.0f / PTC_NOMINAL_TEMP) +
-                         (1.0f / PTC_BETA) * logf(ptcResistance / PTC_NOMINAL_OHMS);
-        static const int TEMP_OFFSET_C = 273;
-        int tempC = (int) (1.0f / invTempK) - TEMP_OFFSET_C;
+        uint32_t startTime = HAL_GetTick();
+        AdcResults adcResults = readAdc();
+        int tempC = tempCountsToC(adcResults.tempCounts);
 
-        setPwmDutyCycle(fanCurveRatio((int) tempC));
+
+        setPwmDutyCycle(fanCurveRatio(tempC));
+
+
+        // 100ms per loop (will mess up at 49-day uptime rollover, but that's ok)
+        uint32_t elapsed = HAL_GetTick() - startTime;
+        if (elapsed < 100) {
+            HAL_Delay(100 - elapsed);
+        }
         HAL_IWDG_Refresh(&hiwdg);
     }
 }

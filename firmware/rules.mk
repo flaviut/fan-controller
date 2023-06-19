@@ -129,3 +129,6 @@ ifeq ($(FLASH_PROGRM),pyocd)
 else
 	@echo "FLASH_PROGRM is invalid\n"
 endif
+
+format:
+	clang-format -i User/*.c User/*.h
