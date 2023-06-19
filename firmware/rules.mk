@@ -111,7 +111,7 @@ $(BDIR)/$(PROJECT).elf: $(OBJS) $(TOP)/$(LDSCRIPT)
 	$(Q)$(OBJCOPY) -I elf32-littlearm -O ihex  $< $@
 
 clean:
-	rm -rf $(BDIR)/*
+	rm -rf Build/*
 
 flash: $(BDIR)/$(PROJECT).hex
 ifeq ($(FLASH_PROGRM),jlink)
