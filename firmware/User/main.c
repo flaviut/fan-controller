@@ -2,7 +2,6 @@
 #include <assert.h>
 #include <math.h>
 
-int __errno;// NOLINT(bugprone-reserved-identifier)
 
 void SysTick_Handler() {
     HAL_IncTick();

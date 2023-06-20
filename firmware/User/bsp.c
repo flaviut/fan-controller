@@ -20,6 +20,7 @@ int _isatty(int file) { return 1; }
 
 int _kill(int pid, int sig) { return 0; }
 
+int __errno;
 
 void HAL_MspInit(void) {
 }
