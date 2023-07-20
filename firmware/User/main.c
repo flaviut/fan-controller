@@ -1,3 +1,4 @@
+#include "logic.h"
 #include "py32f0xx.h"
 #include <assert.h>
 #include <math.h>
@@ -99,38 +100,6 @@ static void APP_AdcConfig(void) {
                                           }));
 }
 
-float fanCurveRatio(int tempC) {
-    // every 10°C, starting at 0°C.
-    static const float fanCurve[] = {
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.0f,
-        0.25f,
-        0.35f,
-        0.75f,
-        1.0f,
-        1.0f,
-    };
-
-    // linear interpolation between the two nearest points
-    int index = tempC / 10;
-    if (index >= 9) {
-        return 1.0f;
-    } else if (index < 0) {
-        return 0.0f;
-    }
-    float fanSpeed =
-        fanCurve[index] +
-        (fanCurve[index + 1] - fanCurve[index]) * ((float) (tempC % 10)) / 10.0f;
-
-    if (fanSpeed < 0.35f && fanSpeed > 0.0f) {
-        fanSpeed = 0.35f;// never less than 35%
-    }
-    return fanSpeed;
-}
-
 
 static const int PWM_FREQ_HZ = (int) 2e5;// 200kHz
 
@@ -211,28 +180,6 @@ AdcResults readAdc() {
         .fanCounts = allFanCounts / NUM_SAMPLES};
 }
 
-int tempCountsToC(uint32_t tempCounts) {
-    float tempVolts = (float) tempCounts / 4096.0f;
-    // voltage cancels out, we just use the ratio to calculate the resistance
-    assert(tempVolts >= 0.0f && tempVolts <= 1.0f);
-    static const float REFERENCE_OHMS = 100000.0f;
-    float ptcResistance = REFERENCE_OHMS * (1.0f / tempVolts - 1.0f);
-
-    // https://en.wikipedia.org/wiki/Thermistor#B_or_%CE%B2_parameter_equation
-    static const float PTC_NOMINAL_OHMS = 100000.0f;
-    static const float PTC_NOMINAL_TEMP = 298.15f;
-    static const float PTC_BETA = 3435.0f;
-    float invTempK = (1.0f / PTC_NOMINAL_TEMP) +
-                     (1.0f / PTC_BETA) * logf(ptcResistance / PTC_NOMINAL_OHMS);
-    static const float TEMP_OFFSET_C = 273.15f;
-    return (int) ((1.0f / invTempK) - TEMP_OFFSET_C);
-}
-
-enum ProcessState {
-    FAN_OFF,
-    FAN_SPINUP,
-    FAN_ON,
-};
 
 int main(void) {
     HAL_Init();
@@ -245,11 +192,26 @@ int main(void) {
     while (1) {
         uint32_t startTime = HAL_GetTick();
         AdcResults adcResults = readAdc();
-        int tempC = tempCountsToC(adcResults.tempCounts);
 
+        static Config config = {
+            .fanMinDutyCycle = .4f,
+            .fanMaxDutyCycle = 1.f,
+            .fanSpinupDutyCycle = 1.f,
+            .fanSpinupTimeMs = 1000,
 
-        setPwmDutyCycle(fanCurveRatio(tempC));
+            .tempMinC = 45,
+            .tempMaxC = 85,
+            .tempHysteresisC = 8,
+        };
 
+        static State state = {
+            .state = FAN_OFF,
+            .lastChangeTimeMs = 0,
+            .lastFilteredTempC = 20,
+        };
+
+        int tempC = tempCountsToC(adcResults.tempCounts, &PTC_THERMISTOR_100K_3950);
+        setPwmDutyCycle(dutyCycle(tempC, HAL_GetTick(), &config, &state));
 
         // 100ms per loop (will mess up at 49-day uptime rollover, but that's ok)
         uint32_t elapsed = HAL_GetTick() - startTime;

@@ -40,7 +40,7 @@ DEBUG_FLAGS ?= -gdwarf-3
 # c flags
 OPT			?= -Og -flto
 CSTD		?= -std=c99
-TGT_CFLAGS 	+= $(ARCH_FLAGS) $(DEBUG_FLAGS) $(OPT) $(CSTD) $(addprefix -D, $(LIB_FLAGS)) -Wall -ffunction-sections -fdata-sections
+TGT_CFLAGS 	+= $(ARCH_FLAGS) $(DEBUG_FLAGS) $(OPT) $(CSTD) $(addprefix -D, $(LIB_FLAGS)) -Wall -ffunction-sections -fdata-sections -flto
 
 # asm flags
 TGT_ASFLAGS += $(ARCH_FLAGS) $(DEBUG_FLAGS) $(OPT) -Wa,--warn
@@ -64,7 +64,7 @@ TGT_INCFLAGS := $(addprefix -I $(TOP)/, $(INCLUDES))
 
 .PHONY: all clean flash echo
 
-all: $(BDIR)/$(PROJECT).elf $(BDIR)/$(PROJECT).bin $(BDIR)/$(PROJECT).hex $(BDIR)/$(PROJECT).stripped.elf
+all: $(BDIR)/$(PROJECT).elf $(BDIR)/$(PROJECT).bin $(BDIR)/$(PROJECT).hex $(BDIR)/$(PROJECT).stripped.elf $(BUILD_DIR)/test
 
 # for debug
 echo:
@@ -132,3 +132,6 @@ endif
 
 format:
 	clang-format -i User/*.c User/*.h
+
+$(BUILD_DIR)/test: Libraries/Unity/unity.c User/logic.c Test/main.c
+	gcc --coverage -lm -IUser -ILibraries/Unity $^ -o $@

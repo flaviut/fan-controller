@@ -1,4 +1,5 @@
 #include "py32f0xx.h"
+#include <sys/cdefs.h>
 
 #pragma ide diagnostic ignored "bugprone-reserved-identifier"
 
@@ -26,4 +27,9 @@ void HAL_MspInit(void) {
 }
 
 void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim) {
+}
+
+_Noreturn void __assert_func(const char *file, int line, const char *func, const char *failedexpr) {
+    // if we have a debugger attached, break into it, otherwise the watchdog will reset us
+    while (1) { __asm__("bkpt"); }
 }
