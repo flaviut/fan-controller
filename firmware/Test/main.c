@@ -2,9 +2,9 @@
 #include "unity.h"
 
 void test_resistanceToTempC(void) {
-    TEST_ASSERT_EQUAL_INT(25, resistanceToTempC(100000., &PTC_THERMISTOR_100K_3950));
-    TEST_ASSERT_INT_WITHIN(3, -30, resistanceToTempC(1724780., &PTC_THERMISTOR_100K_3950));
-    TEST_ASSERT_INT_WITHIN(3, 100, resistanceToTempC(6498., &PTC_THERMISTOR_100K_3950));
+    TEST_ASSERT_EQUAL_INT(25, resistanceToTempC(10000., &PTC_THERMISTOR_10K_3950));
+    TEST_ASSERT_INT_WITHIN(3, -30, resistanceToTempC(172478., &PTC_THERMISTOR_10K_3950));
+    TEST_ASSERT_INT_WITHIN(3, 100, resistanceToTempC(650., &PTC_THERMISTOR_10K_3950));
 }
 
 void test_ratioToUnknownBridgeResistance(void) {
@@ -36,14 +36,14 @@ void test_dutyCycleStandard(void) {
 
     // temp rises, spin up for 1 second
     state.lastFilteredTempC = 35;
-    TEST_ASSERT_EQUAL(100, dutyCycle(35, 100, &config, &state));
+    TEST_ASSERT_EQUAL(1, dutyCycle(35, 100, &config, &state));
     TEST_ASSERT_EQUAL(FAN_SPINUP, state.state);
     TEST_ASSERT_EQUAL(100, state.lastChangeTimeMs);
-    TEST_ASSERT_EQUAL(100, dutyCycle(35, 1000, &config, &state));
+    TEST_ASSERT_EQUAL(1, dutyCycle(35, 1000, &config, &state));
     TEST_ASSERT_EQUAL(FAN_SPINUP, state.state);
 
     // done spinning up, now to normal operation
-    TEST_ASSERT_EQUAL(37, dutyCycle(35, 1101, &config, &state));
+    TEST_ASSERT_EQUAL(.37, dutyCycle(35, 1101, &config, &state));
     TEST_ASSERT_EQUAL(FAN_ON, state.state);
 
     // temperature increases, but filtered value changes more slowly
@@ -56,7 +56,7 @@ void test_dutyCycleStandard(void) {
 
     // temperature drops, but above the hysteresis
     state.lastFilteredTempC = 26;
-    TEST_ASSERT_EQUAL(30, dutyCycle(26, 1123, &config, &state));
+    TEST_ASSERT_EQUAL(.30, dutyCycle(26, 1123, &config, &state));
 
     // temperature drops below the hysteresis & system turns off
     state.lastFilteredTempC = 24;
@@ -86,19 +86,19 @@ void test_wrapAroundTime(void) {
 
     // temp rises, spin up for 1 second
     state.lastFilteredTempC = 35;
-    TEST_ASSERT_EQUAL(100, dutyCycle(35, UINT32_MAX - 100, &config, &state));
+    TEST_ASSERT_EQUAL(1, dutyCycle(35, UINT32_MAX - 100, &config, &state));
     TEST_ASSERT_EQUAL(FAN_SPINUP, state.state);
     TEST_ASSERT_EQUAL(UINT32_MAX - 100, state.lastChangeTimeMs);
-    TEST_ASSERT_EQUAL(100, dutyCycle(35, UINT32_MAX, &config, &state));
+    TEST_ASSERT_EQUAL(1, dutyCycle(35, UINT32_MAX, &config, &state));
     TEST_ASSERT_EQUAL(UINT32_MAX - 100, state.lastChangeTimeMs);
 
     // wraparound, but still spinning up
-    TEST_ASSERT_EQUAL(100, dutyCycle(35, 100, &config, &state));
+    TEST_ASSERT_EQUAL(1, dutyCycle(35, 100, &config, &state));
     TEST_ASSERT_EQUAL(FAN_SPINUP, state.state);
     TEST_ASSERT_EQUAL(UINT32_MAX - 100, state.lastChangeTimeMs);
 
     // done spinning up, now to normal operation
-    TEST_ASSERT_EQUAL(37, dutyCycle(35, 901, &config, &state));
+    TEST_ASSERT_EQUAL(.37, dutyCycle(35, 901, &config, &state));
     TEST_ASSERT_EQUAL(FAN_ON, state.state);
 }
 

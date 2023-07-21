@@ -209,7 +209,7 @@ int main(void) {
             .lastFilteredTempC = 20,
         };
 
-        int tempC = tempCountsToC(adcResults.tempCounts, &PTC_THERMISTOR_100K_3950);
+        int tempC = tempCountsToC(adcResults.tempCounts, &PTC_THERMISTOR_10K_3950);
         setPwmDutyCycle(dutyCycle(tempC, HAL_GetTick(), &config, &state));
 
         // 100ms per loop (will mess up at 49-day uptime rollover, but that's ok)

@@ -71,8 +71,8 @@ typedef struct {
 
 
 static const int KELVIN_OFFSET = 273;
-static const PtcThermistorConfig PTC_THERMISTOR_100K_3950 = {
-    .nominalOhms = 100000,
+static const PtcThermistorConfig PTC_THERMISTOR_10K_3950 = {
+    .nominalOhms = 10000,
     .nominalTempK = 25 + KELVIN_OFFSET,
     .beta = 3950,
 };
