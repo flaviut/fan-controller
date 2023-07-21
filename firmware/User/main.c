@@ -15,7 +15,6 @@ void checkOk(int ok) {
     }
 }
 
-static const float SUPPLY_VOLTS = 5.0f;
 static const int SYSCLOCK_FREQ_HZ = (int) 12e6;
 
 static void APP_SystemClockConfig(void) {
