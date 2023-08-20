@@ -185,7 +185,7 @@ int main(void) {
     APP_PwmOutConfig();
     SystemCoreClockUpdate();
 
-    Config config = {
+    const Config config = {
         .fanMinDutyCycle = .25,
         .fanMaxDutyCycle = 1.,
         .fanSpinupDutyCycle = 1.,
@@ -195,6 +195,7 @@ int main(void) {
         .tempMaxC = 85,
         .tempHysteresisC = 8,
     };
+    const PtcThermistorConfig thermistorConfig = PTC_THERMISTOR_10K_3950;
 
     State state = {
         .state = FAN_OFF,
@@ -206,7 +207,7 @@ int main(void) {
         uint32_t startTime = HAL_GetTick();
         AdcResults adcResults = readAdc();
 
-        double tempC = tempCountsToC(adcResults.tempCounts, &PTC_THERMISTOR_10K_3950);
+        double tempC = tempCountsToC(adcResults.tempCounts, &thermistorConfig);
         double outputRatio = fanVoltageRatio(tempC, HAL_GetTick(), &config, &state);
         double dutyCycle = ratioToDcmBuckDutyCycle(outputRatio);
         setPwmDutyCycle(dutyCycle);
