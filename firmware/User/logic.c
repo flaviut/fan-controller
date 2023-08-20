@@ -1,58 +1,57 @@
 #include "logic.h"
 #include <assert.h>
 #include <math.h>
-#include <stdint.h>
 
-float countsToRatio(uint32_t counts) {
-    return (float) counts / 4096.0f;
+double countsToRatio(uint32_t counts) {
+    return counts / 4096.0;
 }
 
-static const float REFERENCE_OHMS = 100000.0f;
+static const double REFERENCE_OHMS = 100000.0;
 
 /**
- * @param voltageRatio ratio of the voltage to full-scale. For example, 0.5f for 2.5V on a 5V scale.
+ * @param voltageRatio ratio of the voltage to full-scale. For example, 0.5 for 2.5V on a 5V scale.
  * @param knownResistance the resistance of the R2 resistor in the voltage divider (ohms)
  * @return the resistance of the unknown resistor, R1, in ohms
  */
-float ratioToUnknownBridgeResistance(float voltageRatio, float knownResistance) {
+double ratioToUnknownBridgeResistance(double voltageRatio, double knownResistance) {
     // voltage cancels out, we just use the ratio directly to calculate the resistance
-    assert(voltageRatio >= 0.0f && voltageRatio <= 1.0f);
-    return knownResistance * (1.0f / voltageRatio - 1.0f);
+    assert(voltageRatio >= 0.0 && voltageRatio <= 1.0);
+    return knownResistance * (1.0 / voltageRatio - 1.0);
 }
 
-int resistanceToTempC(float thermistorOhms, const PtcThermistorConfig *config) {
-    assert(config->nominalOhms > 0.0f);
-    assert(config->nominalTempK > 0.0f);
-    assert(config->beta > 0.0f);
+double resistanceToTempC(double thermistorOhms, const PtcThermistorConfig *config) {
+    assert(config->nominalOhms > 0.0);
+    assert(config->nominalTempK > 0.0);
+    assert(config->beta > 0.0);
 
-    float nominalOhms = (float) config->nominalOhms;
-    float nominalTempK = (float) config->nominalTempK;
-    float beta = (float) config->beta;
+    double nominalOhms = (double) config->nominalOhms;
+    double nominalTempK = (double) config->nominalTempK;
+    double beta = (double) config->beta;
 
 
     // https://en.wikipedia.org/wiki/Thermistor#B_or_%CE%B2_parameter_equation
-    float invTempK = (1.0f / nominalTempK) +
-                     (1.0f / beta) * logf(thermistorOhms / nominalOhms);
-    return (int) ((1.0f / invTempK) - ((float) KELVIN_OFFSET));
+    double invTempK = (1.0 / nominalTempK) +
+                      (1.0 / beta) * log(thermistorOhms / nominalOhms);
+    return (int) ((1.0 / invTempK) - ((double) KELVIN_OFFSET));
 }
 
-int tempCountsToC(uint32_t tempCounts, const PtcThermistorConfig *config) {
-    float voltageRatio = countsToRatio(tempCounts);
-    float thermistorOhms = ratioToUnknownBridgeResistance(voltageRatio, REFERENCE_OHMS);
+double tempCountsToC(uint32_t tempCounts, const PtcThermistorConfig *config) {
+    double voltageRatio = countsToRatio(tempCounts);
+    double thermistorOhms = ratioToUnknownBridgeResistance(voltageRatio, REFERENCE_OHMS);
     return resistanceToTempC(thermistorOhms, config);
 }
 
 /**
  * Low-pass filter to eliminate noise & jitter in the temperature readings.
  *
- * -3dB @ 0.3Hz, assuming 10Hz sampling rate
+ * -3dB @ 0.15Hz, assuming 10Hz sampling rate
  */
-float filterReadings(float newValue, float oldValue) {
-    static const float ALPHA = 0.2f;
-    return ALPHA * newValue + (1.0f - ALPHA) * oldValue;
+double filterReadings(double newValue, double oldValue) {
+    static const double ALPHA = 0.1;
+    return ALPHA * newValue + (1.0 - ALPHA) * oldValue;
 }
 
-int clampi(int value, int min, int max) {
+double clampd(double value, double min, double max) {
     if (value < min) {
         return min;
     } else if (value > max) {
@@ -61,49 +60,96 @@ int clampi(int value, int min, int max) {
     return value;
 }
 
+/** Linear interpolation between two points */
+double interpolate(double x, double x0, double x1, double y0, double y1) {
+    double xClamped = clampd(x, x0, x1);
+    double xRange = x1 - x0;
+    double yRange = y1 - y0;
+    double xRatio = (xClamped - x0) / xRange;
+    return y0 + xRatio * yRange;
+}
+
+void transitionState(State *state, enum ProcessState newState, uint32_t currentMs) {
+    state->state = newState;
+    state->lastChangeTimeMs = currentMs;
+}
+
 /**
- * Gets the current fan duty cycle, based on the new temperature reading.
+ * this device effectively acts as a buck converter in discontinuous mode. Discontinuous mode
+ * is much more complicated to analyze than continuous mode, and we need to convert the intended
+ * output voltage to a duty cycle.
+ *
+ * the equation here varies depending on the load and the input voltage, but I've graphed the
+ * theoretical output for several different input voltages (12V & 24V) and loads (0.1A, 0.2A, 0.3A),
+ * and the results are fairly close the various parameters we expect this to be used with.
+ *
+ * We use 12V & 0.2A as the default parameters, since this is the most common use case.
  */
-float dutyCycle(int newTempC, uint32_t currentMs, const Config *config, State *state) {
-    state->lastFilteredTempC = filterReadings((float) newTempC, state->lastFilteredTempC);
-    int tempC = (int) state->lastFilteredTempC;
+double ratioToDcmBuckDutyCycle(double voltageRatio) {
+    static const double INPUT_VOLTAGE = 12.0;
+    static const double INDUCTOR_VALUE = 47e-6;
+    static const double OUTPUT_CURRENT = 0.2;
+    static const double SWITCHING_FREQUENCY = PWM_FREQ_HZ;
+    static const double SWITCHING_PERIOD = 1.0 / SWITCHING_FREQUENCY;
+
+    voltageRatio = clampd(voltageRatio, 0.0, 1.0);
+
+    // https://en.wikipedia.org/wiki/Buck_converter#Discontinuous_mode
+    // solved for duty cycle: D = (sqrt(2) sqrt(Vo) sqrt(L) sqrt(Io))/sqrt(Vi^2 T - Vi Vo T)
+    double outputVoltage = voltageRatio * INPUT_VOLTAGE;
+    double top = sqrt(2.0) * sqrt(outputVoltage) * sqrt(INDUCTOR_VALUE) *
+                 sqrt(OUTPUT_CURRENT);
+    double bottom = sqrt(INPUT_VOLTAGE * INPUT_VOLTAGE * SWITCHING_PERIOD -
+                         INPUT_VOLTAGE * outputVoltage * SWITCHING_PERIOD);
+    double duty = top / bottom;
+    // around .95 input the duty cycle exceeds 1.0, so clamp it
+    return clampd(duty, 0.0, 1.0);
+}
+
+/**
+ * Gets the output:input voltage ratio, based on the new temperature reading.
+ *
+ * Different from the duty cycle because we effectively have a buck converter acting in
+ * DCM (discontinuous conduction mode), and the math there is a bit more complicated.
+ */
+double fanVoltageRatio(double newTempC, uint32_t currentMs, const Config *config, State *state) {
+    double tempC = state->lastFilteredTempC = filterReadings((double) newTempC,
+                                                             state->lastFilteredTempC);
     switch (state->state) {
         case FAN_OFF: {
             if (tempC >= config->tempMinC) {
                 // fan should be turned on
-                state->state = FAN_SPINUP;
-                state->lastChangeTimeMs = currentMs;
+                transitionState(state, FAN_SPINUP, currentMs);
                 // fall-through
+                goto fan_spinup;
             } else {
                 // fan should remain off
                 return 0;
             }
         }
-        case FAN_SPINUP: {
+        case FAN_SPINUP:
+        fan_spinup : {
             uint32_t elapsedMs = currentMs - state->lastChangeTimeMs;
             if (elapsedMs < config->fanSpinupTimeMs) {
                 // fan is still spinning up, so keep the duty cycle at the spinup value
                 return config->fanSpinupDutyCycle;
             } else {
                 // fan has finished spinning up, so transition to the normal operating state
-                state->state = FAN_ON;
-                state->lastChangeTimeMs = currentMs;
+                transitionState(state, FAN_ON, currentMs);
                 // fall through to the FAN_ON case (fan has finished spinning up)
+                goto fan_on;
             }
         }
-        case FAN_ON: {
+        case FAN_ON:
+        fan_on : {
             if (tempC < (config->tempMinC - config->tempHysteresisC)) {
                 // fan should be turned off
-                state->state = FAN_OFF;
-                state->lastChangeTimeMs = currentMs;
-                return 0;
+                transitionState(state, FAN_OFF, currentMs);
+                return 0.0;
             } else {
                 // interpolate between the min and max duty cycles based on the current temperature
-                int clampedTempC = clampi(tempC, config->tempMinC, config->tempMaxC);
-                int tempRange = config->tempMaxC - config->tempMinC;
-                float dutyCycleRange = config->fanMaxDutyCycle - config->fanMinDutyCycle;
-                float tempRatio = (float) (clampedTempC - config->tempMinC) / (float) tempRange;
-                return config->fanMinDutyCycle + tempRatio * dutyCycleRange;
+                return interpolate(tempC, config->tempMinC, config->tempMaxC,
+                                   config->fanMinDutyCycle, config->fanMaxDutyCycle);
             }
         }
         default:

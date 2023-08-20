@@ -38,7 +38,8 @@ ARCH_FLAGS	:= -mthumb -mcpu=cortex-m0plus
 DEBUG_FLAGS ?= -gdwarf-3
 
 # c flags
-OPT			?= -O3 -flto
+# -funsafe-math-optimizations -fno-rounding-math to allow for algebraic simplification of floating-point math
+OPT			?= -Og -flto -funsafe-math-optimizations -fno-rounding-math
 CSTD		?= -std=c99
 TGT_CFLAGS 	+= $(ARCH_FLAGS) $(DEBUG_FLAGS) $(OPT) $(CSTD) $(addprefix -D, $(LIB_FLAGS)) -Wall -ffunction-sections -fdata-sections -flto
 
@@ -134,4 +135,4 @@ format:
 	clang-format -i User/*.c User/*.h
 
 $(BUILD_DIR)/test: Libraries/Unity/unity.c User/logic.c Test/main.c
-	gcc --coverage -lm -IUser -ILibraries/Unity $^ -o $@
+	gcc --coverage -DUNITY_INCLUDE_DOUBLE=1 -lm -IUser -ILibraries/Unity $^ -o $@

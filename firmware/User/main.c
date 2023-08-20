@@ -1,7 +1,5 @@
 #include "logic.h"
 #include "py32f0xx.h"
-#include <assert.h>
-#include <math.h>
 
 
 void SysTick_Handler() {
@@ -100,12 +98,12 @@ static void APP_AdcConfig(void) {
 }
 
 
-static const int PWM_FREQ_HZ = (int) 2e5;// 200kHz
+static const int PWM_PERIOD = (SYSCLOCK_FREQ_HZ / PWM_FREQ_HZ) - 1;
 
 TIM_HandleTypeDef htim1 = {
     .Instance = TIM1,
     .Init = {
-        .Period = (SYSCLOCK_FREQ_HZ / PWM_FREQ_HZ) - 1,
+        .Period = PWM_PERIOD,
         .Prescaler = 0,
         .ClockDivision = TIM_CLOCKDIVISION_DIV1,
         .CounterMode = TIM_COUNTERMODE_UP,
@@ -136,24 +134,23 @@ static void APP_PwmOutConfig() {
         &(TIM_OC_InitTypeDef){
             .OCMode = TIM_OCMODE_PWM1,
             .OCFastMode = TIM_OCFAST_DISABLE,
-            // invert polarity because P-channel mosfet inverts again
-            .OCPolarity = TIM_OCPOLARITY_LOW,
-            .OCNPolarity = TIM_OCPOLARITY_LOW,
+            .OCPolarity = TIM_OCPOLARITY_HIGH,
+            .OCNPolarity = TIM_OCNPOLARITY_LOW,
             .OCIdleState = TIM_OCIDLESTATE_RESET,
             .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-            .Pulse = htim1.Init.Period / 3,// duty cycle = 0%
+            .Pulse = 0,// duty cycle = 0%
         },
         TIM_CHANNEL_4));
     checkOk(HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4));
 }
 
-static void setPwmDutyCycle(float dutyCycle) {
-    if (dutyCycle < 0.0f) {
-        dutyCycle = 0.0f;
-    } else if (dutyCycle > 1.0f) {
-        dutyCycle = 1.0f;
+static void setPwmDutyCycle(double dutyCycle) {
+    if (dutyCycle < 0.0) {
+        dutyCycle = 0.0;
+    } else if (dutyCycle > 1.0) {
+        dutyCycle = 1.0;
     }
-    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_4, (uint32_t) (dutyCycle * htim1.Init.Period));
+    __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_4, (uint32_t) (dutyCycle * PWM_PERIOD));
 }
 
 typedef struct {
@@ -188,29 +185,31 @@ int main(void) {
     APP_PwmOutConfig();
     SystemCoreClockUpdate();
 
+    Config config = {
+        .fanMinDutyCycle = .25,
+        .fanMaxDutyCycle = 1.,
+        .fanSpinupDutyCycle = 1.,
+        .fanSpinupTimeMs = 1500,
+
+        .tempMinC = 40,
+        .tempMaxC = 85,
+        .tempHysteresisC = 8,
+    };
+
+    State state = {
+        .state = FAN_OFF,
+        .lastChangeTimeMs = 0,
+        .lastFilteredTempC = 25.,
+    };
+
     while (1) {
         uint32_t startTime = HAL_GetTick();
         AdcResults adcResults = readAdc();
 
-        static Config config = {
-            .fanMinDutyCycle = .4f,
-            .fanMaxDutyCycle = 1.f,
-            .fanSpinupDutyCycle = 1.f,
-            .fanSpinupTimeMs = 1000,
-
-            .tempMinC = 45,
-            .tempMaxC = 85,
-            .tempHysteresisC = 8,
-        };
-
-        static State state = {
-            .state = FAN_OFF,
-            .lastChangeTimeMs = 0,
-            .lastFilteredTempC = 20,
-        };
-
-        int tempC = tempCountsToC(adcResults.tempCounts, &PTC_THERMISTOR_10K_3950);
-        setPwmDutyCycle(dutyCycle(tempC, HAL_GetTick(), &config, &state));
+        double tempC = tempCountsToC(adcResults.tempCounts, &PTC_THERMISTOR_10K_3950);
+        double outputRatio = fanVoltageRatio(tempC, HAL_GetTick(), &config, &state);
+        double dutyCycle = ratioToDcmBuckDutyCycle(outputRatio);
+        setPwmDutyCycle(dutyCycle);
 
         // 100ms per loop (will mess up at 49-day uptime rollover, but that's ok)
         uint32_t elapsed = HAL_GetTick() - startTime;

@@ -3,6 +3,7 @@
 
 #include "stdint.h"
 
+static const int PWM_FREQ_HZ = 30000;
 
 enum ProcessState {
     FAN_OFF,
@@ -20,9 +21,9 @@ typedef struct {
      * This should be above the fan's stall duty cycle when the fan is already
      * spinning.
      */
-    float fanMinDutyCycle;
+    double fanMinDutyCycle;
     /** What is the maximum duty cycle that the fan should be allowed to run at? */
-    float fanMaxDutyCycle;
+    double fanMaxDutyCycle;
     /**
      * It is much easier to keep the fan moving than to start it from a standstill.
      *
@@ -33,7 +34,7 @@ typedef struct {
      * It is recommended that this be 100%, and that the spinup time be used to tune
      * things for quiet operation.
      */
-    float fanSpinupDutyCycle;
+    double fanSpinupDutyCycle;
     /**
      * How long does it take the fan to spin up? This will likely be on the order of
      * 1-2 seconds.
@@ -41,9 +42,9 @@ typedef struct {
     int fanSpinupTimeMs;
 
     /** What is the minimum temperature that the fan should be allowed to run at? */
-    int tempMinC;
+    double tempMinC;
     /** What is the temperature at which the fan should be running as fast as possible */
-    int tempMaxC;
+    double tempMaxC;
 
     /**
      * Once the fan is on, how far below the minimum temperature should we wait
@@ -51,13 +52,13 @@ typedef struct {
      *
      * The goal of this variable is to avoid turning the fan on and off repeatedly
      */
-    int tempHysteresisC;
+    double tempHysteresisC;
 } Config;
 
 typedef struct {
     enum ProcessState state;
     uint32_t lastChangeTimeMs;
-    float lastFilteredTempC;
+    double lastFilteredTempC;
 } State;
 
 typedef struct {
@@ -77,13 +78,17 @@ static const PtcThermistorConfig PTC_THERMISTOR_10K_3950 = {
     .beta = 3950,
 };
 
-int resistanceToTempC(float thermistorOhms, const PtcThermistorConfig *config);
+double filterReadings(double newReading, double lastReading);
 
-float ratioToUnknownBridgeResistance(float voltageRatio, float knownResistance);
+double resistanceToTempC(double thermistorOhms, const PtcThermistorConfig *config);
 
-int tempCountsToC(uint32_t tempCounts, const PtcThermistorConfig *config);
+double ratioToUnknownBridgeResistance(double voltageRatio, double knownResistance);
 
-float dutyCycle(int newTempC, uint32_t currentMs, const Config *config, State *state);
+double tempCountsToC(uint32_t tempCounts, const PtcThermistorConfig *config);
+
+double fanVoltageRatio(double newTempC, uint32_t currentMs, const Config *config, State *state);
+
+double ratioToDcmBuckDutyCycle(double voltageRatio);
 
 
 #endif//FIRMWARE_LOGIC_H
