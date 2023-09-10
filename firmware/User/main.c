@@ -186,7 +186,10 @@ int main(void) {
     SystemCoreClockUpdate();
 
     const Config config = {
-        .fanMinDutyCycle = .25,
+
+        // 25% min works well for 12V fan
+        // 4% min works well for 24V fan
+        .fanMinDutyCycle = .04,
         .fanMaxDutyCycle = 1.,
         .fanSpinupDutyCycle = 1.,
         .fanSpinupTimeMs = 1500,
