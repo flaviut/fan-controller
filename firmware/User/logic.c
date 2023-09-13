@@ -3,7 +3,9 @@
 #include <math.h>
 
 double countsToRatio(uint32_t counts) {
-    return counts / 4096.0;
+    double result = (counts & 0xfff) / 4096.0;
+    double clampedResult = fmin(1.0, fmax(1e-4, result));
+    return clampedResult;
 }
 
 static const double REFERENCE_OHMS = 100000.0;
@@ -15,8 +17,10 @@ static const double REFERENCE_OHMS = 100000.0;
  */
 double ratioToUnknownBridgeResistance(double voltageRatio, double knownResistance) {
     // voltage cancels out, we just use the ratio directly to calculate the resistance
-    assert(voltageRatio >= 0.0 && voltageRatio <= 1.0);
-    return knownResistance * (1.0 / voltageRatio - 1.0);
+    assert(voltageRatio > 1e-5 && voltageRatio <= 1.0);
+    double result = knownResistance * (1.0 / voltageRatio - 1.0);
+    assert(result >= 0.0 && result <= 1e9);
+    return result;
 }
 
 double resistanceToTempC(double thermistorOhms, const PtcThermistorConfig *config) {

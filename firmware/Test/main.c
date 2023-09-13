@@ -110,6 +110,27 @@ void test_filterReadings(void) {
     }
 }
 
+void test_tempCountsToC(void) {
+    // make sure we handle boundary conditions correctly
+    TEST_ASSERT_LESS_OR_EQUAL_DOUBLE(-100, tempCountsToC(0, &PTC_THERMISTOR_10K_3950));
+    TEST_ASSERT_GREATER_OR_EQUAL_DOUBLE(150, tempCountsToC(0xfff, &PTC_THERMISTOR_10K_3950));
+
+    // out-of-bounds inputs should not violate output invariant
+    double maxIntTemp = tempCountsToC(UINT32_MAX, &PTC_THERMISTOR_10K_3950);
+    TEST_ASSERT_GREATER_OR_EQUAL_DOUBLE(-100, maxIntTemp);
+    TEST_ASSERT_LESS_OR_EQUAL_DOUBLE(300, maxIntTemp);
+}
+
+void test_spuriousReading(void) {
+    // a way-out-of-range reading should not crash
+    filterReadings(tempCountsToC(0xffff, &PTC_THERMISTOR_10K_3950), 35.);
+
+    // a single spike of 2**12 should not result in a temperature change of > 1°C
+    double temp = 35.0;
+    temp = filterReadings(tempCountsToC(0xffff, &PTC_THERMISTOR_10K_3950), temp);
+    TEST_ASSERT_LESS_OR_EQUAL_DOUBLE(36, temp);
+}
+
 void test_dcmBuckRatioToDutyCycle(void) {
     TEST_ASSERT_DOUBLE_WITHIN(0.05, 0.2, ratioToDcmBuckDutyCycle(0.5));
     TEST_ASSERT_DOUBLE_WITHIN(0.05, 0.1, ratioToDcmBuckDutyCycle(0.25));
@@ -136,6 +157,8 @@ int main(void) {
     RUN_TEST(test_dutyCycleStandard);
     RUN_TEST(test_wrapAroundTime);
     RUN_TEST(test_filterReadings);
+    RUN_TEST(test_tempCountsToC);
+    RUN_TEST(test_spuriousReading);
     RUN_TEST(test_dcmBuckRatioToDutyCycle);
     return UNITY_END();
 }
