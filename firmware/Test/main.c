@@ -48,11 +48,11 @@ void test_dutyCycleStandard(void) {
 
     // temperature increases, but filtered value changes more slowly
     fanVoltageRatio(44, 1102, &config, &state);
-    TEST_ASSERT_DOUBLE_WITHIN(0.01, 35.9, state.lastFilteredTempC);
+    TEST_ASSERT_DOUBLE_WITHIN(0.1, 35., state.lastFilteredTempC);
 
     // eventually the filtered value catches up
-    for (int i = 0; i < 40; i++) { fanVoltageRatio(44, 1103 + i, &config, &state); }
-    TEST_ASSERT_DOUBLE_WITHIN(0.2, 44., state.lastFilteredTempC);
+    for (int i = 0; i < 400; i++) { fanVoltageRatio(44, 1103 + i, &config, &state); }
+    TEST_ASSERT_DOUBLE_WITHIN(0.5, 41., state.lastFilteredTempC);
 
     // temperature drops, but above the hysteresis
     state.lastFilteredTempC = 26;

@@ -215,10 +215,10 @@ int main(void) {
         double dutyCycle = ratioToDcmBuckDutyCycle(outputRatio);
         setPwmDutyCycle(dutyCycle);
 
-        // 100ms per loop (will mess up at 49-day uptime rollover, but that's ok)
+        // 10ms per loop (will mess up at 49-day uptime rollover, but that's ok)
         uint32_t elapsed = HAL_GetTick() - startTime;
-        if (elapsed < 100) {
-            HAL_Delay(100 - elapsed);
+        if (elapsed < 10) {
+            HAL_Delay(10 - elapsed);
         }
         HAL_IWDG_Refresh(&hiwdg);
     }

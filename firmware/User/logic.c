@@ -43,11 +43,12 @@ double tempCountsToC(uint32_t tempCounts, const PtcThermistorConfig *config) {
 
 /**
  * Low-pass filter to eliminate noise & jitter in the temperature readings.
- *
- * -3dB @ 0.15Hz, assuming 10Hz sampling rate
  */
 double filterReadings(double newValue, double oldValue) {
-    static const double ALPHA = 0.1;
+    static const double PI = 3.14159265358979323846;
+    static const double SAMPLING_RATE_HZ = 100.0;
+    static const double CUTOFF_FREQ_HZ = 0.1;
+    const double ALPHA = 1.0 - (1.0 / (1.0 + tan(PI * CUTOFF_FREQ_HZ / SAMPLING_RATE_HZ)));
     return ALPHA * newValue + (1.0 - ALPHA) * oldValue;
 }
 
@@ -113,8 +114,7 @@ double ratioToDcmBuckDutyCycle(double voltageRatio) {
  * DCM (discontinuous conduction mode), and the math there is a bit more complicated.
  */
 double fanVoltageRatio(double newTempC, uint32_t currentMs, const Config *config, State *state) {
-    double tempC = state->lastFilteredTempC = filterReadings((double) newTempC,
-                                                             state->lastFilteredTempC);
+    double tempC = state->lastFilteredTempC = filterReadings(newTempC, state->lastFilteredTempC);
     switch (state->state) {
         case FAN_OFF: {
             if (tempC >= config->tempMinC) {
