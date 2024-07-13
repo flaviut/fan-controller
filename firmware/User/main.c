@@ -194,8 +194,12 @@ int main(void) {
         .fanSpinupDutyCycle = 1.,
         .fanSpinupTimeMs = 200,
 
-        .tempMinC = 40,
-        .tempMaxC = 85,
+        // this seems aggressive, but keep in mind the temperature sensor is
+        // generally a little bit away from the temperature-generating
+        // component, which means that the temperature measured is signficantly
+        // cooler
+        .tempMinC = 35,
+        .tempMaxC = 65,
         .tempHysteresisC = 8,
     };
     const PtcThermistorConfig thermistorConfig = PTC_THERMISTOR_10K_3950;
