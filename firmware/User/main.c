@@ -192,7 +192,7 @@ int main(void) {
         .fanMinDutyCycle = .04,
         .fanMaxDutyCycle = 1.,
         .fanSpinupDutyCycle = 1.,
-        .fanSpinupTimeMs = 1500,
+        .fanSpinupTimeMs = 200,
 
         .tempMinC = 40,
         .tempMaxC = 85,

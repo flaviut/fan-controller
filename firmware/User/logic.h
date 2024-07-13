@@ -36,8 +36,8 @@ typedef struct {
      */
     double fanSpinupDutyCycle;
     /**
-     * How long does it take the fan to spin up? This will likely be on the order of
-     * 1-2 seconds.
+     * How long does it take the fan to spin up and overcome stiction? In my testing,
+     * it takes about 50ms for the to move the first fan-blade-length.
      */
     int fanSpinupTimeMs;
 

@@ -132,7 +132,7 @@ double fanVoltageRatio(double newTempC, uint32_t currentMs, const Config *config
             }
         }
         case FAN_SPINUP:
-        fan_spinup : {
+        fan_spinup: {
             uint32_t elapsedMs = currentMs - state->lastChangeTimeMs;
             if (elapsedMs < config->fanSpinupTimeMs) {
                 // fan is still spinning up, so keep the duty cycle at the spinup value
@@ -145,7 +145,7 @@ double fanVoltageRatio(double newTempC, uint32_t currentMs, const Config *config
             }
         }
         case FAN_ON:
-        fan_on : {
+        fan_on: {
             if (tempC < (config->tempMinC - config->tempHysteresisC)) {
                 // fan should be turned off
                 transitionState(state, FAN_OFF, currentMs);
